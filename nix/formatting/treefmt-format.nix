@@ -20,7 +20,9 @@ _: {
     prettier = {
       enable = true;
       priority = 50;
-      settings = (builtins.fromJSON (builtins.readFile ../../.prettierrc.json)) // {editorconfig = true;};
+      settings =
+        (removeAttrs (builtins.fromJSON (builtins.readFile ../../.prettierrc.json)) ["plugins"])
+        // {editorconfig = true;};
     };
 
     isort = {
