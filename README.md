@@ -244,6 +244,7 @@ bun run dev --configFile config.yml  # run from source
 bun run build                         # bundle to bundle.cjs
 bun run typecheck
 bun run lint
+bun run format  # prettier --write
 bun run test  # not `bun test`
 ```
 

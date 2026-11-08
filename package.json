@@ -21,6 +21,8 @@
     "@vitest/coverage-v8": "^4.0.6",
     "esbuild": "^0.25.11",
     "eslint": "^9.38.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vitest": "^4.0.6"
@@ -38,6 +40,8 @@
   "scripts": {
     "build": "bun esbuild.ts",
     "dev": "bun src/cli/index.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
