@@ -20,15 +20,7 @@ _: {
     prettier = {
       enable = true;
       priority = 50;
-      settings.editorconfig = true;
-    };
-
-    deno = {
-      enable = true;
-      includes = [
-        "*.md"
-      ];
-      priority = 60;
+      settings = (builtins.fromJSON (builtins.readFile ../../.prettierrc.json)) // {editorconfig = true;};
     };
 
     isort = {
@@ -48,4 +40,11 @@ _: {
       priority = 80;
     };
   };
+
+  settings.global.excludes = [
+    "CHANGELOG.md"
+    "bun.lock"
+    "flake.lock"
+    "generated/**"
+  ];
 }
