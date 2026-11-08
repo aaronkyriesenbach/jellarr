@@ -1,5 +1,5 @@
-import type { BrandingOptionsConfig } from "../types/config/branding-options";
-import type { BrandingOptionsDtoSchema } from "../types/schema/branding-options";
+import type { BrandingOptionsConfig } from '@/types/config/branding-options';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
 
 export function mapBrandingOptionsConfigToSchema(
   desired: BrandingOptionsConfig,

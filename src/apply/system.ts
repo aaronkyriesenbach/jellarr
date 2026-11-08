@@ -1,42 +1,37 @@
-import { logger } from "../lib/logger";
-import { ChangeSetBuilder, AtomicChangeSetBuilder } from "../lib/changeset";
-import type { JellyfinClient } from "../api/jellyfin.types";
-import { mapSystemConfigurationConfigToSchema } from "../mappers/system";
-import { type SystemConfig } from "../types/config/system";
-import { type ServerConfigurationSchema } from "../types/schema/system";
-import { diff, applyChangeset, type IChange } from "json-diff-ts";
+import { logger } from '@/lib/logger';
+import { ChangeSetBuilder, AtomicChangeSetBuilder } from '@/lib/changeset';
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import { mapSystemConfigurationConfigToSchema } from '@/mappers/system';
+import { type SystemConfig } from '@/types/config/system';
+import { type ServerConfigurationSchema } from '@/types/schema/system';
+import { diff, applyChangeset, type IChange } from 'json-diff-ts';
 
 export function calculateSystemDiff(
   current: ServerConfigurationSchema,
   desired: SystemConfig,
 ): ServerConfigurationSchema | undefined {
-  const next: ServerConfigurationSchema =
-    mapSystemConfigurationConfigToSchema(desired);
+  const next: ServerConfigurationSchema = mapSystemConfigurationConfigToSchema(desired);
 
   const patch: IChange[] = new AtomicChangeSetBuilder([
-    ...new ChangeSetBuilder(
-      diff(current, next, { treatTypeChangeAsReplace: false }),
-    )
-      .withKey("EnableMetrics")
+    ...new ChangeSetBuilder(diff(current, next, { treatTypeChangeAsReplace: false }))
+      .withKey('EnableMetrics')
       .withoutRemoves()
       .atomize()
       .toArray(),
 
     ...new ChangeSetBuilder(
       diff(current, next, {
-        embeddedObjKeys: { ".": "Name" },
+        embeddedObjKeys: { '.': 'Name' },
         treatTypeChangeAsReplace: false,
       }),
     )
-      .withKey("PluginRepositories")
+      .withKey('PluginRepositories')
       .withoutRemoves()
       .atomize()
       .toArray(),
 
-    ...new ChangeSetBuilder(
-      diff(current, next, { treatTypeChangeAsReplace: false }),
-    )
-      .withKey("TrickplayOptions")
+    ...new ChangeSetBuilder(diff(current, next, { treatTypeChangeAsReplace: false }))
+      .withKey('TrickplayOptions')
       .withoutRemoves()
       .atomize()
       .withoutRemoves()

@@ -1,0 +1,7 @@
+node_modules
+bundle.cjs
+coverage
+generated
+CHANGELOG.md
+pnpm-lock.yaml
+flake.lock

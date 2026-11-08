@@ -4,7 +4,7 @@ import {
   unatomizeChangeset,
   type IChange,
   type IAtomicChange,
-} from "json-diff-ts";
+} from 'json-diff-ts';
 
 interface IChangeBase {
   type: Operation;
@@ -17,15 +17,11 @@ abstract class BaseChangeSetBuilder<T extends IChangeBase> {
   protected abstract create(changes: T[]): this;
 
   withoutRemoves(): this {
-    return this.create(
-      this.changes.filter((c: IChange) => c.type !== Operation.REMOVE),
-    );
+    return this.create(this.changes.filter((c: IChange) => c.type !== Operation.REMOVE));
   }
 
   withoutUpdates(): this {
-    return this.create(
-      this.changes.filter((c: IChange) => c.type !== Operation.UPDATE),
-    );
+    return this.create(this.changes.filter((c: IChange) => c.type !== Operation.UPDATE));
   }
 
   withKey(key: string): this {

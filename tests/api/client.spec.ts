@@ -1,22 +1,20 @@
-import { describe, it, expect, vi, type Mock } from "vitest";
-import { makeClient } from "../../src/api/client";
-import { type paths } from "../../generated/schema";
-import type { Client } from "openapi-fetch";
+import { describe, it, expect, vi, type Mock } from 'vitest';
+import { makeClient } from '@/api/client';
+import { type paths } from '@generated/schema';
+import type { Client } from 'openapi-fetch';
 
-describe("api/client", () => {
-  it("whenClientCreated_thenHeadersInjectedOnEachRequest()", async () => {
+describe('api/client', () => {
+  it('whenClientCreated_thenHeadersInjectedOnEachRequest()', async () => {
     // Arrange
     const spy: Mock = vi
-      .spyOn(globalThis as unknown as { fetch: typeof fetch }, "fetch")
-      .mockResolvedValue(
-        new Response(JSON.stringify({ ok: true }), { status: 200 }),
-      );
+      .spyOn(globalThis as unknown as { fetch: typeof fetch }, 'fetch')
+      .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
 
     try {
       // Act
-      const jf: Client<paths> = makeClient("http://example:8096", "XYZ");
+      const jf: Client<paths> = makeClient('http://example:8096', 'XYZ');
 
-      await jf.GET("/System/Info/Public");
+      await jf.GET('/System/Info/Public');
 
       // Assert
       expect(spy).toHaveBeenCalledTimes(1);
@@ -25,11 +23,11 @@ describe("api/client", () => {
       expect(req).toBeInstanceOf(Request);
 
       const h: Headers = req.headers;
-      expect(h.get("Authorization")).toBe(
+      expect(h.get('Authorization')).toBe(
         'MediaBrowser Token="XYZ", Client="jellarr", Device="cli", DeviceId="jellarr", Version="0.1.0"',
       );
-      expect(h.get("X-Emby-Token")).toBeNull();
-      expect(h.get("X-Emby-Authorization")).toBeNull();
+      expect(h.get('X-Emby-Token')).toBeNull();
+      expect(h.get('X-Emby-Authorization')).toBeNull();
     } finally {
       spy.mockRestore();
     }

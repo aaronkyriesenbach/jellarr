@@ -2,12 +2,12 @@ import {
   type SystemConfig,
   type TrickplayOptionsConfig,
   type PluginRepositoryConfig,
-} from "../types/config/system";
+} from '@/types/config/system';
 import {
   type ServerConfigurationSchema,
   type TrickplayOptionsSchema,
   type PluginRepositorySchema,
-} from "../types/schema/system";
+} from '@/types/schema/system';
 
 export function toPluginRepositorySchemas(
   inRepos: PluginRepositoryConfig[],
@@ -21,9 +21,7 @@ export function toPluginRepositorySchemas(
   );
 }
 
-export function toTrickplayOptionsSchema(
-  cfg: TrickplayOptionsConfig,
-): TrickplayOptionsSchema {
+export function toTrickplayOptionsSchema(cfg: TrickplayOptionsConfig): TrickplayOptionsSchema {
   const out: TrickplayOptionsSchema = {};
   out.EnableHwAcceleration = cfg.enableHwAcceleration;
   out.EnableHwEncoding = cfg.enableHwEncoding;
@@ -40,9 +38,7 @@ export function mapSystemConfigurationConfigToSchema(
   }
 
   if (desired.pluginRepositories !== undefined) {
-    out.PluginRepositories = toPluginRepositorySchemas(
-      desired.pluginRepositories,
-    );
+    out.PluginRepositories = toPluginRepositorySchemas(desired.pluginRepositories);
   }
 
   if (desired.trickplayOptions !== undefined) {

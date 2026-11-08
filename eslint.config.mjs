@@ -1,6 +1,6 @@
-import eslint from "@eslint/js";
-import { defineConfig, globalIgnores } from "eslint/config";
-import tseslint from "typescript-eslint";
+import eslint from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   eslint.configs.recommended,
@@ -15,16 +15,16 @@ export default defineConfig(
   },
   {
     rules: {
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
         {
-          fixStyle: "inline-type-imports",
-          prefer: "type-imports",
+          fixStyle: 'inline-type-imports',
+          prefer: 'type-imports',
         },
       ],
 
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
         {
           allowDirectConstAssertionInArrowFunctions: true,
           allowExpressions: false,
@@ -33,10 +33,10 @@ export default defineConfig(
         },
       ],
 
-      "@typescript-eslint/no-explicit-any": "error",
+      '@typescript-eslint/no-explicit-any': 'error',
 
-      "@typescript-eslint/typedef": [
-        "error",
+      '@typescript-eslint/typedef': [
+        'error',
         {
           arrayDestructuring: true,
           arrowParameter: true,
@@ -49,61 +49,59 @@ export default defineConfig(
         },
       ],
 
-      "@typescript-eslint/naming-convention": [
-        "error",
+      '@typescript-eslint/naming-convention': [
+        'error',
         {
-          selector: ["property"],
-          modifiers: ["requiresQuotes"],
+          selector: ['property'],
+          modifiers: ['requiresQuotes'],
           format: null,
         },
         {
-          selector: "property",
-          format: ["camelCase", "PascalCase", "snake_case"],
+          selector: 'property',
+          format: ['camelCase', 'PascalCase', 'snake_case'],
         },
         {
-          selector: "default",
-          format: ["camelCase"],
+          selector: 'default',
+          format: ['camelCase'],
         },
         {
-          selector: "variable",
-          format: ["camelCase", "UPPER_CASE", "PascalCase"],
+          selector: 'variable',
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         },
         {
-          selector: "typeLike",
-          format: ["PascalCase"],
+          selector: 'typeLike',
+          format: ['PascalCase'],
         },
         {
-          selector: "import",
-          format: ["camelCase", "PascalCase", "UPPER_CASE"],
+          selector: 'import',
+          format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
         },
       ],
 
       // conflicts with typedef strictness
-      "@typescript-eslint/no-inferrable-types": "off",
+      '@typescript-eslint/no-inferrable-types': 'off',
       // conflicts with strict rules
-      "@typescript-eslint/non-nullable-type-assertion-style": "off",
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
 
       // enforce array-simple for better readability on complex types
-      "@typescript-eslint/array-type": [
-        "error",
+      '@typescript-eslint/array-type': [
+        'error',
         {
-          default: "array-simple",
-          readonly: "array-simple",
+          default: 'array-simple',
+          readonly: 'array-simple',
         },
       ],
       // keep generics on left side for consistency
-      "@typescript-eslint/consistent-generic-constructors": [
-        "error",
-        "type-annotation",
-      ],
+      '@typescript-eslint/consistent-generic-constructors': ['error', 'type-annotation'],
     },
   },
   [
     globalIgnores([
-      "**bundle.cjs",
-      "esbuild.ts",
-      "eslint.config.mjs",
-      "generated/**",
+      '**bundle.cjs',
+      'esbuild.ts',
+      'vitest.config.ts',
+      'eslint.config.mjs',
+      'generated/**',
     ]),
   ],
 );

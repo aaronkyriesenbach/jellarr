@@ -1,17 +1,17 @@
-import { logger } from "../lib/logger";
-import { ChangeSetBuilder } from "../lib/changeset";
-import type { JellyfinClient } from "../api/jellyfin.types";
-import type { VirtualFolderConfig } from "../types/config/library";
+import { logger } from '@/lib/logger';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import type { VirtualFolderConfig } from '@/types/config/library';
 import type {
   VirtualFolderInfoSchema,
   CollectionTypeSchema,
   AddVirtualFolderDtoSchema,
-} from "../types/schema/library";
+} from '@/types/schema/library';
 import {
   mapVirtualFolderConfigToSchema,
   mapVirtualFolderInfoSchemaToAddVirtualFolderDtoSchema,
-} from "../mappers/library";
-import { applyChangeset, diff, type IChange } from "json-diff-ts";
+} from '@/mappers/library';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculateLibraryDiff(
   current: VirtualFolderInfoSchema[],
@@ -21,13 +21,11 @@ export function calculateLibraryDiff(
     return undefined;
   }
 
-  const next: VirtualFolderInfoSchema[] = desired.map(
-    mapVirtualFolderConfigToSchema,
-  );
+  const next: VirtualFolderInfoSchema[] = desired.map(mapVirtualFolderConfigToSchema);
 
   const patch: IChange[] = new ChangeSetBuilder(
     diff(current, next, {
-      embeddedObjKeys: { ".": "Name" },
+      embeddedObjKeys: { '.': 'Name' },
       treatTypeChangeAsReplace: false,
     }),
   )

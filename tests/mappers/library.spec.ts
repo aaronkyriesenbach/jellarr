@@ -1,89 +1,83 @@
-import { describe, it, expect } from "vitest";
-import { mapVirtualFolderConfigToSchema } from "../../src/mappers/library";
-import type { VirtualFolderConfig } from "../../src/types/config/library";
-import type { VirtualFolderInfoSchema } from "../../src/types/schema/library";
+import { describe, it, expect } from 'vitest';
+import { mapVirtualFolderConfigToSchema } from '@/mappers/library';
+import type { VirtualFolderConfig } from '@/types/config/library';
+import type { VirtualFolderInfoSchema } from '@/types/schema/library';
 
-describe("mappers/library", () => {
-  describe("mapVirtualFolderConfigToSchema", () => {
-    it("should map single location correctly", () => {
+describe('mappers/library', () => {
+  describe('mapVirtualFolderConfigToSchema', () => {
+    it('should map single location correctly', () => {
       // Arrange
       const config: VirtualFolderConfig = {
-        name: "Movies",
-        collectionType: "movies",
+        name: 'Movies',
+        collectionType: 'movies',
         libraryOptions: {
-          pathInfos: [{ path: "/data/movies" }],
+          pathInfos: [{ path: '/data/movies' }],
         },
       };
 
       // Act
-      const result: Partial<VirtualFolderInfoSchema> =
-        mapVirtualFolderConfigToSchema(config);
+      const result: Partial<VirtualFolderInfoSchema> = mapVirtualFolderConfigToSchema(config);
 
       // Assert
       expect(result).toEqual({
-        Name: "Movies",
-        CollectionType: "movies",
+        Name: 'Movies',
+        CollectionType: 'movies',
         LibraryOptions: {
-          PathInfos: [{ Path: "/data/movies" }],
+          PathInfos: [{ Path: '/data/movies' }],
         },
       });
     });
 
-    it("should map multiple locations correctly", () => {
+    it('should map multiple locations correctly', () => {
       // Arrange
       const config: VirtualFolderConfig = {
-        name: "TV Shows",
-        collectionType: "tvshows",
+        name: 'TV Shows',
+        collectionType: 'tvshows',
         libraryOptions: {
-          pathInfos: [
-            { path: "/data/path1" },
-            { path: "/data/path2" },
-            { path: "/data/path3" },
-          ],
+          pathInfos: [{ path: '/data/path1' }, { path: '/data/path2' }, { path: '/data/path3' }],
         },
       };
 
       // Act
-      const result: Partial<VirtualFolderInfoSchema> =
-        mapVirtualFolderConfigToSchema(config);
+      const result: Partial<VirtualFolderInfoSchema> = mapVirtualFolderConfigToSchema(config);
 
       // Assert
-      expect(result.Name).toBe("TV Shows");
-      expect(result.CollectionType).toBe("tvshows");
+      expect(result.Name).toBe('TV Shows');
+      expect(result.CollectionType).toBe('tvshows');
       expect(result.LibraryOptions?.PathInfos).toHaveLength(3);
       expect(result.LibraryOptions?.PathInfos?.[0]).toEqual({
-        Path: "/data/path1",
+        Path: '/data/path1',
       });
       expect(result.LibraryOptions?.PathInfos?.[1]).toEqual({
-        Path: "/data/path2",
+        Path: '/data/path2',
       });
       expect(result.LibraryOptions?.PathInfos?.[2]).toEqual({
-        Path: "/data/path3",
+        Path: '/data/path3',
       });
     });
 
-    it("should handle different collection types", () => {
+    it('should handle different collection types', () => {
       const types: readonly [
-        "movies",
-        "tvshows",
-        "music",
-        "musicvideos",
-        "homevideos",
-        "boxsets",
-        "books",
-        "mixed",
+        'movies',
+        'tvshows',
+        'music',
+        'musicvideos',
+        'homevideos',
+        'boxsets',
+        'books',
+        'mixed',
       ] = [
-        "movies",
-        "tvshows",
-        "music",
-        "musicvideos",
-        "homevideos",
-        "boxsets",
-        "books",
-        "mixed",
+        'movies',
+        'tvshows',
+        'music',
+        'musicvideos',
+        'homevideos',
+        'boxsets',
+        'books',
+        'mixed',
       ] as const;
 
-      types.forEach((collectionType: VirtualFolderConfig["collectionType"]) => {
+      types.forEach((collectionType: VirtualFolderConfig['collectionType']) => {
         // Arrange
         const config: VirtualFolderConfig = {
           name: `Test ${collectionType}`,
@@ -94,8 +88,7 @@ describe("mappers/library", () => {
         };
 
         // Act
-        const result: Partial<VirtualFolderInfoSchema> =
-          mapVirtualFolderConfigToSchema(config);
+        const result: Partial<VirtualFolderInfoSchema> = mapVirtualFolderConfigToSchema(config);
 
         // Assert
         expect(result.Name).toBe(`Test ${collectionType}`);
@@ -106,31 +99,30 @@ describe("mappers/library", () => {
       });
     });
 
-    it("should preserve exact location strings", () => {
+    it('should preserve exact location strings', () => {
       // Arrange
       const locations: string[] = [
-        "/data/path with spaces",
-        "/data/path-with-dashes",
-        "/data/path_with_underscores",
-        "/very/deep/nested/path/structure",
-        "relative/path",
+        '/data/path with spaces',
+        '/data/path-with-dashes',
+        '/data/path_with_underscores',
+        '/very/deep/nested/path/structure',
+        'relative/path',
       ];
 
       const config: VirtualFolderConfig = {
-        name: "Complex Paths",
-        collectionType: "movies",
+        name: 'Complex Paths',
+        collectionType: 'movies',
         libraryOptions: {
           pathInfos: locations.map((path: string) => ({ path })),
         },
       };
 
       // Act
-      const result: Partial<VirtualFolderInfoSchema> =
-        mapVirtualFolderConfigToSchema(config);
+      const result: Partial<VirtualFolderInfoSchema> = mapVirtualFolderConfigToSchema(config);
 
       // Assert
-      expect(result.Name).toBe("Complex Paths");
-      expect(result.CollectionType).toBe("movies");
+      expect(result.Name).toBe('Complex Paths');
+      expect(result.CollectionType).toBe('movies');
       expect(result.LibraryOptions?.PathInfos).toHaveLength(locations.length);
       locations.forEach((location: string, index: number) => {
         expect(result.LibraryOptions?.PathInfos?.[index]).toEqual({
@@ -139,25 +131,24 @@ describe("mappers/library", () => {
       });
     });
 
-    it("should create proper schema structure", () => {
+    it('should create proper schema structure', () => {
       // Arrange
       const config: VirtualFolderConfig = {
-        name: "Test",
-        collectionType: "music",
+        name: 'Test',
+        collectionType: 'music',
         libraryOptions: {
-          pathInfos: [{ path: "/data/music" }],
+          pathInfos: [{ path: '/data/music' }],
         },
       };
 
       // Act
-      const result: Partial<VirtualFolderInfoSchema> =
-        mapVirtualFolderConfigToSchema(config);
+      const result: Partial<VirtualFolderInfoSchema> = mapVirtualFolderConfigToSchema(config);
 
       // Assert
-      expect(result).toHaveProperty("Name");
-      expect(result).toHaveProperty("CollectionType");
-      expect(result).toHaveProperty("LibraryOptions");
-      expect(result.LibraryOptions).toHaveProperty("PathInfos");
+      expect(result).toHaveProperty('Name');
+      expect(result).toHaveProperty('CollectionType');
+      expect(result).toHaveProperty('LibraryOptions');
+      expect(result.LibraryOptions).toHaveProperty('PathInfos');
       expect(Array.isArray(result.LibraryOptions?.PathInfos)).toBe(true);
     });
   });

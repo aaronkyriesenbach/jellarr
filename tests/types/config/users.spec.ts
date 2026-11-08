@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import type { ZodSafeParseResult } from "zod";
-import { type z } from "zod";
+import { describe, it, expect } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 import {
   UserConfigType,
   type UserConfig,
@@ -8,44 +8,41 @@ import {
   type UserConfigList,
   UserPolicyConfigType,
   type UserPolicyConfig,
-} from "../../../src/types/config/users";
+} from '@/types/config/users';
 
-describe("UserConfig", () => {
-  it("should reject user with name only (no password source)", () => {
+describe('UserConfig', () => {
+  it('should reject user with name only (no password source)', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
+      name: 'test-user',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should validate valid user config with name and password", () => {
+  it('should validate valid user config with name and password', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigType> = {
-      name: "test-jellarr",
-      password: "test",
+      name: 'test-jellarr',
+      password: 'test',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -54,16 +51,15 @@ describe("UserConfig", () => {
     }
   });
 
-  it("should validate valid user config with name and passwordFile", () => {
+  it('should validate valid user config with name and passwordFile', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigType> = {
-      name: "test-jellarr",
-      passwordFile: "/run/secrets/user-password",
+      name: 'test-jellarr',
+      passwordFile: '/run/secrets/user-password',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -72,16 +68,15 @@ describe("UserConfig", () => {
     }
   });
 
-  it("should reject empty name", () => {
+  it('should reject empty name', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "",
-      password: "test",
+      name: '',
+      password: 'test',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -89,16 +84,16 @@ describe("UserConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const nameError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) => err.path.includes("name"),
+        (err: z.core.$ZodIssue) => err.path.includes('name'),
       );
-      expect(nameError?.message).toContain("User name is required");
+      expect(nameError?.message).toContain('User name is required');
     }
   });
 
-  it("should reject missing name", () => {
+  it('should reject missing name', () => {
     // Arrange
     const invalidConfig: Partial<z.input<typeof UserConfigType>> = {
-      password: "test",
+      password: 'test',
     };
 
     // Act
@@ -110,197 +105,182 @@ describe("UserConfig", () => {
     expect(result.success).toBe(false);
   });
 
-  it("should reject user with both password and passwordFile", () => {
+  it('should reject user with both password and passwordFile', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      password: "test",
-      passwordFile: "/run/secrets/user-password",
+      name: 'test-user',
+      password: 'test',
+      passwordFile: '/run/secrets/user-password',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject user with neither password nor passwordFile", () => {
+  it('should reject user with neither password nor passwordFile', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
+      name: 'test-user',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject empty password", () => {
+  it('should reject empty password', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      password: "",
+      name: 'test-user',
+      password: '',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject empty passwordFile", () => {
+  it('should reject empty passwordFile', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      passwordFile: "",
+      name: 'test-user',
+      passwordFile: '',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject whitespace-only password", () => {
+  it('should reject whitespace-only password', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      password: "   ",
+      name: 'test-user',
+      password: '   ',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject whitespace-only passwordFile", () => {
+  it('should reject whitespace-only passwordFile', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      passwordFile: "   ",
+      name: 'test-user',
+      passwordFile: '   ',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const refineError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "custom",
-        );
+      const refineError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'custom',
+      );
       expect(refineError?.message).toContain(
         "Must specify exactly one of 'password' or 'passwordFile'",
       );
     }
   });
 
-  it("should reject extra fields due to strict mode", () => {
+  it('should reject extra fields due to strict mode', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      password: "valid-password",
+      name: 'test-user',
+      password: 'valid-password',
       // @ts-expect-error intentional extra field for test
-      unknownField: "should not be allowed",
+      unknownField: 'should not be allowed',
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const strictError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "unrecognized_keys",
-        );
-      expect(strictError?.code).toBe("unrecognized_keys");
+      const strictError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'unrecognized_keys',
+      );
+      expect(strictError?.code).toBe('unrecognized_keys');
     }
   });
 });
 
-describe("UserConfigList", () => {
-  it("should validate empty user list", () => {
+describe('UserConfigList', () => {
+  it('should validate empty user list', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigListType> = [];
 
     // Act
-    const result: ZodSafeParseResult<UserConfigList> =
-      UserConfigListType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfigList> = UserConfigListType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -309,26 +289,25 @@ describe("UserConfigList", () => {
     }
   });
 
-  it("should validate user list with multiple users", () => {
+  it('should validate user list with multiple users', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigListType> = [
       {
-        name: "user1",
-        password: "password1",
+        name: 'user1',
+        password: 'password1',
       },
       {
-        name: "user2",
-        passwordFile: "/run/secrets/user2-password",
+        name: 'user2',
+        passwordFile: '/run/secrets/user2-password',
       },
       {
-        name: "test-jellarr",
-        password: "test",
+        name: 'test-jellarr',
+        password: 'test',
       },
     ];
 
     // Act
-    const result: ZodSafeParseResult<UserConfigList> =
-      UserConfigListType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfigList> = UserConfigListType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -337,30 +316,29 @@ describe("UserConfigList", () => {
     }
   });
 
-  it("should reject list with invalid user", () => {
+  it('should reject list with invalid user', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigListType> = [
       {
-        name: "valid-user",
-        password: "valid-password",
+        name: 'valid-user',
+        password: 'valid-password',
       },
       {
-        name: "",
-        password: "password-for-empty-name",
+        name: '',
+        password: 'password-for-empty-name',
       },
     ];
 
     // Act
-    const result: ZodSafeParseResult<UserConfigList> =
-      UserConfigListType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfigList> = UserConfigListType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
   });
 });
 
-describe("UserPolicyConfig", () => {
-  it("should validate empty policy config", () => {
+describe('UserPolicyConfig', () => {
+  it('should validate empty policy config', () => {
     // Arrange
     const validConfig: z.input<typeof UserPolicyConfigType> = {};
 
@@ -375,7 +353,7 @@ describe("UserPolicyConfig", () => {
     }
   });
 
-  it("should validate policy with all fields", () => {
+  it('should validate policy with all fields', () => {
     // Arrange
     const validConfig: z.input<typeof UserPolicyConfigType> = {
       isAdministrator: true,
@@ -393,7 +371,7 @@ describe("UserPolicyConfig", () => {
     }
   });
 
-  it("should validate policy with individual fields", () => {
+  it('should validate policy with individual fields', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof UserPolicyConfigType>> = [
       { isAdministrator: true },
@@ -401,22 +379,20 @@ describe("UserPolicyConfig", () => {
       { loginAttemptsBeforeLockout: 10 },
     ];
 
-    validConfigs.forEach(
-      (validConfig: z.input<typeof UserPolicyConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<UserPolicyConfig> =
-          UserPolicyConfigType.safeParse(validConfig);
+    validConfigs.forEach((validConfig: z.input<typeof UserPolicyConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<UserPolicyConfig> =
+        UserPolicyConfigType.safeParse(validConfig);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(validConfig);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(validConfig);
+      }
+    });
   });
 
-  it("should reject negative loginAttemptsBeforeLockout", () => {
+  it('should reject negative loginAttemptsBeforeLockout', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserPolicyConfigType> = {
       loginAttemptsBeforeLockout: -1,
@@ -432,14 +408,13 @@ describe("UserPolicyConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const numError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) =>
-          err.path.includes("loginAttemptsBeforeLockout"),
+        (err: z.core.$ZodIssue) => err.path.includes('loginAttemptsBeforeLockout'),
       );
-      expect(numError?.message).toContain(">=1");
+      expect(numError?.message).toContain('>=1');
     }
   });
 
-  it("should reject zero loginAttemptsBeforeLockout", () => {
+  it('should reject zero loginAttemptsBeforeLockout', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserPolicyConfigType> = {
       loginAttemptsBeforeLockout: 0,
@@ -455,14 +430,13 @@ describe("UserPolicyConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const numError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) =>
-          err.path.includes("loginAttemptsBeforeLockout"),
+        (err: z.core.$ZodIssue) => err.path.includes('loginAttemptsBeforeLockout'),
       );
-      expect(numError?.message).toContain(">=1");
+      expect(numError?.message).toContain('>=1');
     }
   });
 
-  it("should reject non-integer loginAttemptsBeforeLockout", () => {
+  it('should reject non-integer loginAttemptsBeforeLockout', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserPolicyConfigType> = {
       loginAttemptsBeforeLockout: 3.5,
@@ -478,39 +452,36 @@ describe("UserPolicyConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const intError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) =>
-          err.path.includes("loginAttemptsBeforeLockout"),
+        (err: z.core.$ZodIssue) => err.path.includes('loginAttemptsBeforeLockout'),
       );
-      expect(intError?.message).toContain("int");
+      expect(intError?.message).toContain('int');
     }
   });
 
-  it("should reject non-boolean policy fields", () => {
+  it('should reject non-boolean policy fields', () => {
     // Arrange
     const invalidConfigs: Array<z.input<typeof UserPolicyConfigType>> = [
       // @ts-expect-error intentional bad types for test
-      { isAdministrator: "true" },
+      { isAdministrator: 'true' },
     ];
 
-    invalidConfigs.forEach(
-      (invalidConfig: z.input<typeof UserPolicyConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<UserPolicyConfig> =
-          UserPolicyConfigType.safeParse(invalidConfig);
+    invalidConfigs.forEach((invalidConfig: z.input<typeof UserPolicyConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<UserPolicyConfig> =
+        UserPolicyConfigType.safeParse(invalidConfig);
 
-        // Assert
-        expect(result.success).toBe(false);
-      },
-    );
+      // Assert
+      expect(result.success).toBe(false);
+    });
   });
 });
 
-describe("UserConfig with policy", () => {
-  it("should validate user with policy configuration", () => {
+describe('UserConfig with policy', () => {
+  it('should validate user with policy configuration', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigType> = {
-      name: "admin-user",
-      password: "password",
+      name: 'admin-user',
+      password: 'password',
       policy: {
         isAdministrator: true,
         loginAttemptsBeforeLockout: 3,
@@ -518,8 +489,7 @@ describe("UserConfig with policy", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -528,41 +498,40 @@ describe("UserConfig with policy", () => {
     }
   });
 
-  it("should reject invalid policy object", () => {
+  it('should reject invalid policy object', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigType> = {
-      name: "test-user",
-      password: "password",
+      name: 'test-user',
+      password: 'password',
       policy: {
         // @ts-expect-error intentional bad type for test
-        isAdministrator: "true",
+        isAdministrator: 'true',
         loginAttemptsBeforeLockout: -1,
       },
     };
 
     // Act
-    const result: ZodSafeParseResult<UserConfig> =
-      UserConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfig> = UserConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
   });
 });
 
-describe("UserConfigList with policies", () => {
-  it("should validate list with users having policies", () => {
+describe('UserConfigList with policies', () => {
+  it('should validate list with users having policies', () => {
     // Arrange
     const validConfig: z.input<typeof UserConfigListType> = [
       {
-        name: "admin",
-        password: "admin-pass",
+        name: 'admin',
+        password: 'admin-pass',
         policy: {
           isAdministrator: true,
         },
       },
       {
-        name: "viewer",
-        passwordFile: "/secrets/viewer",
+        name: 'viewer',
+        passwordFile: '/secrets/viewer',
         policy: {
           isAdministrator: false,
           loginAttemptsBeforeLockout: 5,
@@ -571,8 +540,7 @@ describe("UserConfigList with policies", () => {
     ];
 
     // Act
-    const result: ZodSafeParseResult<UserConfigList> =
-      UserConfigListType.safeParse(validConfig);
+    const result: ZodSafeParseResult<UserConfigList> = UserConfigListType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -581,16 +549,16 @@ describe("UserConfigList with policies", () => {
     }
   });
 
-  it("should reject list with invalid policy values", () => {
+  it('should reject list with invalid policy values', () => {
     // Arrange
     const invalidConfig: z.input<typeof UserConfigListType> = [
       {
-        name: "valid-user",
-        password: "password",
+        name: 'valid-user',
+        password: 'password',
       },
       {
-        name: "invalid-user",
-        password: "password",
+        name: 'invalid-user',
+        password: 'password',
         policy: {
           loginAttemptsBeforeLockout: -5,
         },
@@ -598,8 +566,7 @@ describe("UserConfigList with policies", () => {
     ];
 
     // Act
-    const result: ZodSafeParseResult<UserConfigList> =
-      UserConfigListType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<UserConfigList> = UserConfigListType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);

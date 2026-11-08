@@ -1,5 +1,5 @@
-name: "Feature Request"
-description: "Propose a new API integration or configuration feature for Jellarr"
+name: 'Feature Request'
+description: 'Propose a new API integration or configuration feature for Jellarr'
 labels: [enhancement]
 body:
   - type: markdown

@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { deepEqual } from "fast-equals";
+import { describe, it, expect } from 'vitest';
+import { deepEqual } from 'fast-equals';
 
-describe("lib/deep-equality", () => {
-  describe("deepEqual vs JSON.stringify", () => {
-    it("should handle objects with different property order correctly", () => {
+describe('lib/deep-equality', () => {
+  describe('deepEqual vs JSON.stringify', () => {
+    it('should handle objects with different property order correctly', () => {
       // Arrange
       const obj1: { a: number; b: number; c: number } = { a: 1, b: 2, c: 3 };
       const obj2: { c: number; b: number; a: number } = { c: 3, b: 2, a: 1 };
@@ -14,7 +14,7 @@ describe("lib/deep-equality", () => {
       expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(false);
     });
 
-    it("should handle undefined values correctly", () => {
+    it('should handle undefined values correctly', () => {
       // Arrange
       const obj1: { a: number; b: undefined } = { a: 1, b: undefined };
       const obj2: { a: number; b: undefined } = { a: 1, b: undefined };
@@ -29,7 +29,7 @@ describe("lib/deep-equality", () => {
       expect(JSON.stringify(obj1) === JSON.stringify(obj3)).toBe(true);
     });
 
-    it("should handle nested objects correctly", () => {
+    it('should handle nested objects correctly', () => {
       // Arrange
       const obj1: {
         system: { enableMetrics: boolean };
@@ -51,18 +51,18 @@ describe("lib/deep-equality", () => {
       expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(false);
     });
 
-    it("should handle Date objects correctly", () => {
+    it('should handle Date objects correctly', () => {
       // Arrange
-      const date: Date = new Date("2024-01-01");
+      const date: Date = new Date('2024-01-01');
       const obj1: { timestamp: Date } = { timestamp: date };
-      const obj2: { timestamp: Date } = { timestamp: new Date("2024-01-01") };
+      const obj2: { timestamp: Date } = { timestamp: new Date('2024-01-01') };
 
       // Act & Assert
       expect(deepEqual(obj1, obj2)).toBe(true);
       expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(true);
 
       const obj3: { timestamp: string } = {
-        timestamp: "2024-01-01T00:00:00.000Z",
+        timestamp: '2024-01-01T00:00:00.000Z',
       };
       expect(deepEqual(obj1, obj3)).toBe(false);
       expect(JSON.stringify(obj1) === JSON.stringify(obj3)).toBe(true);

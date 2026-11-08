@@ -1,12 +1,9 @@
-import type { components } from "../../../generated/schema";
+import type { components } from '@generated/schema';
 
-export type ServerConfigurationSchema =
-  components["schemas"]["ServerConfiguration"];
+export type ServerConfigurationSchema = components['schemas']['ServerConfiguration'];
 
 export type PluginRepositorySchema = NonNullable<
-  ServerConfigurationSchema["PluginRepositories"]
+  ServerConfigurationSchema['PluginRepositories']
 >[number];
 
-export type TrickplayOptionsSchema = NonNullable<
-  ServerConfigurationSchema["TrickplayOptions"]
->;
+export type TrickplayOptionsSchema = NonNullable<ServerConfigurationSchema['TrickplayOptions']>;

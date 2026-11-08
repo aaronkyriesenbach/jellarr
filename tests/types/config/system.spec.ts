@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import type { ZodSafeParseResult } from "zod";
-import { type z } from "zod";
+import { describe, it, expect } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 import {
   SystemConfigType,
   type SystemConfig,
@@ -8,16 +8,15 @@ import {
   type PluginRepositoryConfig,
   TrickplayOptionsConfigType,
   type TrickplayOptionsConfig,
-} from "../../../src/types/config/system";
+} from '@/types/config/system';
 
-describe("SystemConfig", () => {
-  it("should validate empty system config", () => {
+describe('SystemConfig', () => {
+  it('should validate empty system config', () => {
     // Arrange
     const validConfig: z.input<typeof SystemConfigType> = {};
 
     // Act
-    const result: ZodSafeParseResult<SystemConfig> =
-      SystemConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<SystemConfig> = SystemConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -26,14 +25,14 @@ describe("SystemConfig", () => {
     }
   });
 
-  it("should validate full system config", () => {
+  it('should validate full system config', () => {
     // Arrange
     const validConfig: z.input<typeof SystemConfigType> = {
       enableMetrics: true,
       pluginRepositories: [
         {
-          name: "Jellyfin Official",
-          url: "https://repo.jellyfin.org/releases/plugin/manifest.json",
+          name: 'Jellyfin Official',
+          url: 'https://repo.jellyfin.org/releases/plugin/manifest.json',
           enabled: true,
         },
       ],
@@ -44,8 +43,7 @@ describe("SystemConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<SystemConfig> =
-      SystemConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<SystemConfig> = SystemConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -54,38 +52,36 @@ describe("SystemConfig", () => {
     }
   });
 
-  it("should reject extra fields due to strict mode", () => {
+  it('should reject extra fields due to strict mode', () => {
     // Arrange
     const invalidConfig: z.input<typeof SystemConfigType> = {
       enableMetrics: true,
       // @ts-expect-error intentional extra field for test
-      unknownField: "should not be allowed",
+      unknownField: 'should not be allowed',
     };
 
     // Act
-    const result: ZodSafeParseResult<SystemConfig> =
-      SystemConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<SystemConfig> = SystemConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const strictError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "unrecognized_keys",
-        );
-      expect(strictError?.code).toBe("unrecognized_keys");
+      const strictError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'unrecognized_keys',
+      );
+      expect(strictError?.code).toBe('unrecognized_keys');
     }
   });
 });
 
-describe("PluginRepositoryConfig", () => {
-  it("should validate valid plugin repository config", () => {
+describe('PluginRepositoryConfig', () => {
+  it('should validate valid plugin repository config', () => {
     // Arrange
     const validConfig: z.input<typeof PluginRepositoryConfigType> = {
-      name: "Test Repository",
-      url: "https://example.com/manifest.json",
+      name: 'Test Repository',
+      url: 'https://example.com/manifest.json',
       enabled: true,
     };
 
@@ -100,11 +96,11 @@ describe("PluginRepositoryConfig", () => {
     }
   });
 
-  it("should reject empty name", () => {
+  it('should reject empty name', () => {
     // Arrange
     const invalidConfig: z.input<typeof PluginRepositoryConfigType> = {
-      name: "",
-      url: "https://example.com/manifest.json",
+      name: '',
+      url: 'https://example.com/manifest.json',
       enabled: true,
     };
 
@@ -118,17 +114,17 @@ describe("PluginRepositoryConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const nameError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) => err.path.includes("name"),
+        (err: z.core.$ZodIssue) => err.path.includes('name'),
       );
-      expect(nameError?.message).toContain("cannot be empty");
+      expect(nameError?.message).toContain('cannot be empty');
     }
   });
 
-  it("should reject invalid URL", () => {
+  it('should reject invalid URL', () => {
     // Arrange
     const invalidConfig: z.input<typeof PluginRepositoryConfigType> = {
-      name: "Test Repository",
-      url: "not-a-valid-url",
+      name: 'Test Repository',
+      url: 'not-a-valid-url',
       enabled: true,
     };
 
@@ -142,31 +138,30 @@ describe("PluginRepositoryConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const urlError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) => err.path.includes("url"),
+        (err: z.core.$ZodIssue) => err.path.includes('url'),
       );
-      expect(urlError?.message).toContain("must be a valid URL");
+      expect(urlError?.message).toContain('must be a valid URL');
     }
   });
 
-  it("should reject missing fields", () => {
+  it('should reject missing fields', () => {
     // Arrange
     const invalidConfig: Partial<z.input<typeof PluginRepositoryConfigType>> = {
-      name: "Test Repository",
+      name: 'Test Repository',
     };
 
     // Act
-    const result: ZodSafeParseResult<PluginRepositoryConfig> =
-      PluginRepositoryConfigType.safeParse(
-        invalidConfig as z.input<typeof PluginRepositoryConfigType>,
-      );
+    const result: ZodSafeParseResult<PluginRepositoryConfig> = PluginRepositoryConfigType.safeParse(
+      invalidConfig as z.input<typeof PluginRepositoryConfigType>,
+    );
 
     // Assert
     expect(result.success).toBe(false);
   });
 });
 
-describe("TrickplayOptionsConfig", () => {
-  it("should validate empty trickplay options", () => {
+describe('TrickplayOptionsConfig', () => {
+  it('should validate empty trickplay options', () => {
     // Arrange
     const validConfig: z.input<typeof TrickplayOptionsConfigType> = {};
 
@@ -181,7 +176,7 @@ describe("TrickplayOptionsConfig", () => {
     }
   });
 
-  it("should validate with only enableHwAcceleration", () => {
+  it('should validate with only enableHwAcceleration', () => {
     // Arrange
     const validConfig: z.input<typeof TrickplayOptionsConfigType> = {
       enableHwAcceleration: true,
@@ -198,7 +193,7 @@ describe("TrickplayOptionsConfig", () => {
     }
   });
 
-  it("should validate with both options", () => {
+  it('should validate with both options', () => {
     // Arrange
     const validConfig: z.input<typeof TrickplayOptionsConfigType> = {
       enableHwAcceleration: false,
@@ -216,11 +211,11 @@ describe("TrickplayOptionsConfig", () => {
     }
   });
 
-  it("should reject non-boolean values", () => {
+  it('should reject non-boolean values', () => {
     // Arrange
     const invalidConfig: z.input<typeof TrickplayOptionsConfigType> = {
       // @ts-expect-error intentional bad type for test
-      enableHwAcceleration: "true",
+      enableHwAcceleration: 'true',
     };
 
     // Act

@@ -1,23 +1,20 @@
-import { describe, it, expect } from "vitest";
-import type { ZodSafeParseResult } from "zod";
-import { type z } from "zod";
-import {
-  RootConfigType,
-  type RootConfig,
-} from "../../../src/types/config/root";
+import { describe, it, expect } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
+import { RootConfigType, type RootConfig } from '@/types/config/root';
 
-describe("RootConfig", () => {
-  it("should validate complete root config", () => {
+describe('RootConfig', () => {
+  it('should validate complete root config', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {
         enableMetrics: true,
         pluginRepositories: [
           {
-            name: "Test Repository",
-            url: "https://test.example.com/manifest.json",
+            name: 'Test Repository',
+            url: 'https://test.example.com/manifest.json',
             enabled: true,
           },
         ],
@@ -28,8 +25,7 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -38,11 +34,11 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with encoding section", () => {
+  it('should validate root config with encoding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       encoding: {
         enableHardwareEncoding: true,
@@ -50,8 +46,7 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -60,17 +55,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without encoding section", () => {
+  it('should validate root config without encoding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -79,19 +73,19 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with library section", () => {
+  it('should validate root config with library section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       library: {
         virtualFolders: [
           {
-            name: "Movies",
-            collectionType: "movies",
+            name: 'Movies',
+            collectionType: 'movies',
             libraryOptions: {
-              pathInfos: [{ path: "/mnt/movies" }],
+              pathInfos: [{ path: '/mnt/movies' }],
             },
           },
         ],
@@ -99,30 +93,28 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.library).toBeDefined();
       expect(result.data.library?.virtualFolders).toHaveLength(1);
-      expect(result.data.library?.virtualFolders?.[0].name).toBe("Movies");
+      expect(result.data.library?.virtualFolders?.[0].name).toBe('Movies');
     }
   });
 
-  it("should validate root config with empty library section", () => {
+  it('should validate root config with empty library section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       library: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -132,17 +124,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without library section", () => {
+  it('should validate root config without library section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -151,42 +142,39 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid version", () => {
+  it('should reject invalid version', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: -1,
-      base_url: "http://example.com",
+      base_url: 'http://example.com',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const versionError: z.core.$ZodIssue | undefined =
-        result.error.issues.find((err: z.core.$ZodIssue) =>
-          err.path.includes("version"),
-        );
-      expect(versionError?.message).toContain("positive integer");
+      const versionError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.path.includes('version'),
+      );
+      expect(versionError?.message).toContain('positive integer');
     }
   });
 
-  it("should reject invalid base_url", () => {
+  it('should reject invalid base_url', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "not-a-url",
+      base_url: 'not-a-url',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -194,13 +182,13 @@ describe("RootConfig", () => {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
       const urlError: z.core.$ZodIssue | undefined = result.error.issues.find(
-        (err: z.core.$ZodIssue) => err.path.includes("base_url"),
+        (err: z.core.$ZodIssue) => err.path.includes('base_url'),
       );
-      expect(urlError?.message).toContain("must be a valid URL");
+      expect(urlError?.message).toContain('must be a valid URL');
     }
   });
 
-  it("should reject missing required fields", () => {
+  it('should reject missing required fields', () => {
     // Arrange
     const invalidConfig: Partial<z.input<typeof RootConfigType>> = {
       version: 1,
@@ -215,44 +203,40 @@ describe("RootConfig", () => {
     expect(result.success).toBe(false);
   });
 
-  it("should validate root config with branding section", () => {
+  it('should validate root config with branding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       branding: {
-        loginDisclaimer: "Custom login message",
-        customCss: "body { background: black; }",
+        loginDisclaimer: 'Custom login message',
+        customCss: 'body { background: black; }',
       },
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.branding).toBeDefined();
-      expect(result.data.branding?.loginDisclaimer).toBe(
-        "Custom login message",
-      );
+      expect(result.data.branding?.loginDisclaimer).toBe('Custom login message');
     }
   });
 
-  it("should validate root config with empty branding section", () => {
+  it('should validate root config with empty branding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       branding: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -261,17 +245,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without branding section", () => {
+  it('should validate root config without branding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -280,21 +263,20 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid branding configuration", () => {
+  it('should reject invalid branding configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       branding: {
         // @ts-expect-error intentional invalid field for test
-        invalidField: "not allowed",
+        invalidField: 'not allowed',
       },
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -304,50 +286,48 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with users section", () => {
+  it('should validate root config with users section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       users: [
         {
-          name: "testuser",
-          password: "testpass123",
+          name: 'testuser',
+          password: 'testpass123',
         },
         {
-          name: "fileuser",
-          passwordFile: "/secrets/password",
+          name: 'fileuser',
+          passwordFile: '/secrets/password',
         },
       ],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.users).toBeDefined();
       expect(result.data.users).toHaveLength(2);
-      expect(result.data.users?.[0].name).toBe("testuser");
-      expect(result.data.users?.[1].name).toBe("fileuser");
+      expect(result.data.users?.[0].name).toBe('testuser');
+      expect(result.data.users?.[1].name).toBe('fileuser');
     }
   });
 
-  it("should validate root config with empty users section", () => {
+  it('should validate root config with empty users section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       users: [],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -357,17 +337,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without users section", () => {
+  it('should validate root config without users section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -376,22 +355,21 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid users configuration", () => {
+  it('should reject invalid users configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       users: [
         {
-          name: "invaliduser",
+          name: 'invaliduser',
         },
       ],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -401,18 +379,17 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with empty encoding section", () => {
+  it('should validate root config with empty encoding section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       encoding: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -421,21 +398,20 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid encoding configuration", () => {
+  it('should reject invalid encoding configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       encoding: {
         // @ts-expect-error intentional invalid boolean value for test
-        enableHardwareEncoding: "invalid_boolean_value",
+        enableHardwareEncoding: 'invalid_boolean_value',
       },
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -445,20 +421,20 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid library configuration", () => {
+  it('should reject invalid library configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       library: {
         virtualFolders: [
           {
-            name: "InvalidLibrary",
+            name: 'InvalidLibrary',
             // @ts-expect-error intentional invalid collection type for test
-            collectionType: "invalid_type",
+            collectionType: 'invalid_type',
             libraryOptions: {
-              pathInfos: [{ path: "/invalid/path" }],
+              pathInfos: [{ path: '/invalid/path' }],
             },
           },
         ],
@@ -466,8 +442,7 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -477,17 +452,17 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with all fields", () => {
+  it('should validate root config with all fields', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {
         enableMetrics: true,
         pluginRepositories: [
           {
-            name: "Test Repository",
-            url: "https://test.example.com/manifest.json",
+            name: 'Test Repository',
+            url: 'https://test.example.com/manifest.json',
             enabled: true,
           },
         ],
@@ -501,31 +476,31 @@ describe("RootConfig", () => {
       library: {
         virtualFolders: [
           {
-            name: "movies",
-            collectionType: "movies",
+            name: 'movies',
+            collectionType: 'movies',
             libraryOptions: {
-              pathInfos: [{ path: "/media/movies" }],
+              pathInfos: [{ path: '/media/movies' }],
             },
           },
         ],
       },
       branding: {
-        loginDisclaimer: "Welcome to our media server",
-        customCss: "body { font-family: Arial; }",
+        loginDisclaimer: 'Welcome to our media server',
+        customCss: 'body { font-family: Arial; }',
       },
       users: [
         {
-          name: "admin",
-          password: "adminpass123",
+          name: 'admin',
+          password: 'adminpass123',
         },
         {
-          name: "viewer",
-          passwordFile: "/secrets/viewer_password",
+          name: 'viewer',
+          passwordFile: '/secrets/viewer_password',
         },
       ],
       plugins: [
         {
-          name: "Trakt",
+          name: 'Trakt',
           configuration: { TraktUsers: [{ ExtraLogging: true }] },
         },
       ],
@@ -535,8 +510,7 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -553,38 +527,36 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject extra fields due to strict mode", () => {
+  it('should reject extra fields due to strict mode', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://example.com",
+      base_url: 'http://example.com',
       system: {},
       // @ts-expect-error intentional extra field for test
-      extraField: "not allowed",
+      extraField: 'not allowed',
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const strictError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "unrecognized_keys",
-        );
-      expect(strictError?.code).toBe("unrecognized_keys");
+      const strictError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'unrecognized_keys',
+      );
+      expect(strictError?.code).toBe('unrecognized_keys');
     }
   });
 
-  it("should validate root config with startup section", () => {
+  it('should validate root config with startup section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       startup: {
         completeStartupWizard: true,
@@ -592,8 +564,7 @@ describe("RootConfig", () => {
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -603,18 +574,17 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with empty startup section", () => {
+  it('should validate root config with empty startup section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       startup: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -623,17 +593,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without startup section", () => {
+  it('should validate root config without startup section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -642,21 +611,20 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid startup configuration", () => {
+  it('should reject invalid startup configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       startup: {
         // @ts-expect-error intentional invalid field for test
-        invalidField: "not allowed",
+        invalidField: 'not allowed',
       },
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);
@@ -666,47 +634,45 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with plugins section", () => {
+  it('should validate root config with plugins section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
-      plugins: [{ name: "Trakt" }, { name: "Playback Reporting" }],
+      plugins: [{ name: 'Trakt' }, { name: 'Playback Reporting' }],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.plugins).toBeDefined();
       expect(result.data.plugins).toHaveLength(2);
-      expect(result.data.plugins?.[0].name).toBe("Trakt");
-      expect(result.data.plugins?.[1].name).toBe("Playback Reporting");
+      expect(result.data.plugins?.[0].name).toBe('Trakt');
+      expect(result.data.plugins?.[1].name).toBe('Playback Reporting');
     }
   });
 
-  it("should validate root config with plugins containing configuration", () => {
+  it('should validate root config with plugins containing configuration', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       plugins: [
         {
-          name: "Trakt",
+          name: 'Trakt',
           configuration: { TraktUsers: [{ ExtraLogging: true }] },
         },
-        { name: "Playback Reporting" },
+        { name: 'Playback Reporting' },
       ],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -718,18 +684,17 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config with empty plugins section", () => {
+  it('should validate root config with empty plugins section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
       plugins: [],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -739,17 +704,16 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should validate root config without plugins section", () => {
+  it('should validate root config without plugins section', () => {
     // Arrange
     const validConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(validConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(validConfig);
 
     // Assert
     expect(result.success).toBe(true);
@@ -758,18 +722,17 @@ describe("RootConfig", () => {
     }
   });
 
-  it("should reject invalid plugins configuration", () => {
+  it('should reject invalid plugins configuration', () => {
     // Arrange
     const invalidConfig: z.input<typeof RootConfigType> = {
       version: 1,
-      base_url: "http://10.0.0.76:8096",
+      base_url: 'http://10.0.0.76:8096',
       system: {},
-      plugins: [{ name: "" }],
+      plugins: [{ name: '' }],
     };
 
     // Act
-    const result: ZodSafeParseResult<RootConfig> =
-      RootConfigType.safeParse(invalidConfig);
+    const result: ZodSafeParseResult<RootConfig> = RootConfigType.safeParse(invalidConfig);
 
     // Assert
     expect(result.success).toBe(false);

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const BrandingOptionsConfigType: z.ZodObject<{
   loginDisclaimer: z.ZodOptional<z.ZodString>;

@@ -1,13 +1,13 @@
-import { describe, it, expect } from "vitest";
-import type { ZodSafeParseResult } from "zod";
-import { type z } from "zod";
+import { describe, it, expect } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 import {
   EncodingOptionsConfigType,
   type EncodingOptionsConfig,
-} from "../../../src/types/config/encoding-options";
+} from '@/types/config/encoding-options';
 
-describe("EncodingOptionsConfig", () => {
-  it("should validate empty encoding config", () => {
+describe('EncodingOptionsConfig', () => {
+  it('should validate empty encoding config', () => {
     // Arrange
     const validConfig: z.input<typeof EncodingOptionsConfigType> = {};
 
@@ -22,7 +22,7 @@ describe("EncodingOptionsConfig", () => {
     }
   });
 
-  it("should validate encoding config with enableHardwareEncoding true", () => {
+  it('should validate encoding config with enableHardwareEncoding true', () => {
     // Arrange
     const validConfig: z.input<typeof EncodingOptionsConfigType> = {
       enableHardwareEncoding: true,
@@ -39,7 +39,7 @@ describe("EncodingOptionsConfig", () => {
     }
   });
 
-  it("should validate encoding config with enableHardwareEncoding false", () => {
+  it('should validate encoding config with enableHardwareEncoding false', () => {
     // Arrange
     const validConfig: z.input<typeof EncodingOptionsConfigType> = {
       enableHardwareEncoding: false,
@@ -56,11 +56,11 @@ describe("EncodingOptionsConfig", () => {
     }
   });
 
-  it("should reject non-boolean enableHardwareEncoding", () => {
+  it('should reject non-boolean enableHardwareEncoding', () => {
     // Arrange
     const invalidConfig: z.input<typeof EncodingOptionsConfigType> = {
       // @ts-expect-error intentional bad type for test
-      enableHardwareEncoding: "true",
+      enableHardwareEncoding: 'true',
     };
 
     // Act
@@ -71,43 +71,41 @@ describe("EncodingOptionsConfig", () => {
     expect(result.success).toBe(false);
   });
 
-  it("should validate hardwareAccelerationType with valid values", () => {
+  it('should validate hardwareAccelerationType with valid values', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
-      { hardwareAccelerationType: "none" as const },
-      { hardwareAccelerationType: "amf" as const },
-      { hardwareAccelerationType: "qsv" as const },
-      { hardwareAccelerationType: "nvenc" as const },
-      { hardwareAccelerationType: "v4l2m2m" as const },
-      { hardwareAccelerationType: "vaapi" as const },
-      { hardwareAccelerationType: "videotoolbox" as const },
-      { hardwareAccelerationType: "rkmpp" as const },
+      { hardwareAccelerationType: 'none' as const },
+      { hardwareAccelerationType: 'amf' as const },
+      { hardwareAccelerationType: 'qsv' as const },
+      { hardwareAccelerationType: 'nvenc' as const },
+      { hardwareAccelerationType: 'v4l2m2m' as const },
+      { hardwareAccelerationType: 'vaapi' as const },
+      { hardwareAccelerationType: 'videotoolbox' as const },
+      { hardwareAccelerationType: 'rkmpp' as const },
       {
         enableHardwareEncoding: true,
-        hardwareAccelerationType: "vaapi" as const,
+        hardwareAccelerationType: 'vaapi' as const,
       },
     ];
 
-    validConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    validConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(config);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(config);
+      }
+    });
   });
 
-  it("should reject invalid hardwareAccelerationType values", () => {
+  it('should reject invalid hardwareAccelerationType values', () => {
     // Arrange
     const invalidConfig: z.input<typeof EncodingOptionsConfigType> = {
       // @ts-expect-error intentional bad value for test
-      hardwareAccelerationType: "invalid_type",
+      hardwareAccelerationType: 'invalid_type',
     };
 
     // Act
@@ -122,38 +120,35 @@ describe("EncodingOptionsConfig", () => {
 
       const hasEnumError: boolean = result.error.issues.some(
         (issue: z.core.$ZodIssue) =>
-          issue.code === "invalid_value" &&
-          issue.path[0] === "hardwareAccelerationType",
+          issue.code === 'invalid_value' && issue.path[0] === 'hardwareAccelerationType',
       );
       expect(hasEnumError).toBe(true);
     }
   });
 
-  it("should validate vaapiDevice and qsvDevice string fields", () => {
+  it('should validate vaapiDevice and qsvDevice string fields', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
-      { vaapiDevice: "/dev/dri/renderD128" },
-      { qsvDevice: "/dev/dri/renderD129" },
-      { vaapiDevice: "", qsvDevice: "" },
-      { vaapiDevice: "/path/to/device", qsvDevice: "/another/path" },
+      { vaapiDevice: '/dev/dri/renderD128' },
+      { qsvDevice: '/dev/dri/renderD129' },
+      { vaapiDevice: '', qsvDevice: '' },
+      { vaapiDevice: '/path/to/device', qsvDevice: '/another/path' },
     ];
 
-    validConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    validConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(config);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(config);
+      }
+    });
   });
 
-  it("should reject non-string vaapiDevice and qsvDevice", () => {
+  it('should reject non-string vaapiDevice and qsvDevice', () => {
     // Arrange
     const invalidConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       // @ts-expect-error intentional bad type for test
@@ -164,78 +159,64 @@ describe("EncodingOptionsConfig", () => {
       { vaapiDevice: null },
     ];
 
-    invalidConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    invalidConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(false);
-      },
-    );
+      // Assert
+      expect(result.success).toBe(false);
+    });
   });
 
-  it("should validate hardwareDecodingCodecs array with valid codec values", () => {
+  it('should validate hardwareDecodingCodecs array with valid codec values', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
-      { hardwareDecodingCodecs: ["h264"] },
-      { hardwareDecodingCodecs: ["h264", "hevc", "vp9"] },
+      { hardwareDecodingCodecs: ['h264'] },
+      { hardwareDecodingCodecs: ['h264', 'hevc', 'vp9'] },
       {
-        hardwareDecodingCodecs: [
-          "h264",
-          "hevc",
-          "mpeg2video",
-          "vc1",
-          "vp8",
-          "vp9",
-          "av1",
-        ],
+        hardwareDecodingCodecs: ['h264', 'hevc', 'mpeg2video', 'vc1', 'vp8', 'vp9', 'av1'],
       },
       { hardwareDecodingCodecs: [] },
     ];
 
-    validConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    validConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(config);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(config);
+      }
+    });
   });
 
-  it("should reject invalid hardwareDecodingCodecs values", () => {
+  it('should reject invalid hardwareDecodingCodecs values', () => {
     // Arrange
     const invalidConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       // @ts-expect-error intentional bad codec for test
-      { hardwareDecodingCodecs: ["invalid_codec"] },
+      { hardwareDecodingCodecs: ['invalid_codec'] },
       // @ts-expect-error intentional bad codec for test
-      { hardwareDecodingCodecs: ["h264", "bad_codec"] },
+      { hardwareDecodingCodecs: ['h264', 'bad_codec'] },
       // @ts-expect-error intentional bad type for test
-      { hardwareDecodingCodecs: "not_array" },
+      { hardwareDecodingCodecs: 'not_array' },
       // @ts-expect-error intentional bad type for test
       { hardwareDecodingCodecs: [123] },
     ];
 
-    invalidConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    invalidConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(false);
-      },
-    );
+      // Assert
+      expect(result.success).toBe(false);
+    });
   });
 
-  it("should validate all decoding color depth boolean fields", () => {
+  it('should validate all decoding color depth boolean fields', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       { enableDecodingColorDepth10Hevc: true },
@@ -254,26 +235,24 @@ describe("EncodingOptionsConfig", () => {
       },
     ];
 
-    validConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    validConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(config);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(config);
+      }
+    });
   });
 
-  it("should reject non-boolean decoding color depth fields", () => {
+  it('should reject non-boolean decoding color depth fields', () => {
     // Arrange
     const invalidConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       // @ts-expect-error intentional bad type for test
-      { enableDecodingColorDepth10Hevc: "true" },
+      { enableDecodingColorDepth10Hevc: 'true' },
       // @ts-expect-error intentional bad type for test
       { enableDecodingColorDepth10Vp9: 1 },
       // @ts-expect-error intentional bad type for test
@@ -282,19 +261,17 @@ describe("EncodingOptionsConfig", () => {
       { enableDecodingColorDepth12HevcRext: [] },
     ];
 
-    invalidConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    invalidConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(false);
-      },
-    );
+      // Assert
+      expect(result.success).toBe(false);
+    });
   });
 
-  it("should validate encoding format boolean fields", () => {
+  it('should validate encoding format boolean fields', () => {
     // Arrange
     const validConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       { allowHevcEncoding: true },
@@ -305,52 +282,48 @@ describe("EncodingOptionsConfig", () => {
       { allowHevcEncoding: false, allowAv1Encoding: true },
     ];
 
-    validConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    validConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(true);
-        if (result.success) {
-          expect(result.data).toEqual(config);
-        }
-      },
-    );
+      // Assert
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(config);
+      }
+    });
   });
 
-  it("should reject non-boolean encoding format fields", () => {
+  it('should reject non-boolean encoding format fields', () => {
     // Arrange
     const invalidConfigs: Array<z.input<typeof EncodingOptionsConfigType>> = [
       // @ts-expect-error intentional bad type for test
-      { allowHevcEncoding: "false" },
+      { allowHevcEncoding: 'false' },
       // @ts-expect-error intentional bad type for test
       { allowAv1Encoding: 0 },
       // @ts-expect-error intentional bad type for test
       { allowHevcEncoding: null },
     ];
 
-    invalidConfigs.forEach(
-      (config: z.input<typeof EncodingOptionsConfigType>) => {
-        // Act
-        const result: ZodSafeParseResult<EncodingOptionsConfig> =
-          EncodingOptionsConfigType.safeParse(config);
+    invalidConfigs.forEach((config: z.input<typeof EncodingOptionsConfigType>) => {
+      // Act
+      const result: ZodSafeParseResult<EncodingOptionsConfig> =
+        EncodingOptionsConfigType.safeParse(config);
 
-        // Assert
-        expect(result.success).toBe(false);
-      },
-    );
+      // Assert
+      expect(result.success).toBe(false);
+    });
   });
 
-  it("should validate complete encoding config with all fields", () => {
+  it('should validate complete encoding config with all fields', () => {
     // Arrange
     const validConfig: z.input<typeof EncodingOptionsConfigType> = {
       enableHardwareEncoding: true,
-      hardwareAccelerationType: "vaapi",
-      vaapiDevice: "/dev/dri/renderD128",
-      qsvDevice: "",
-      hardwareDecodingCodecs: ["h264", "hevc", "vp9", "av1"],
+      hardwareAccelerationType: 'vaapi',
+      vaapiDevice: '/dev/dri/renderD128',
+      qsvDevice: '',
+      hardwareDecodingCodecs: ['h264', 'hevc', 'vp9', 'av1'],
       enableDecodingColorDepth10Hevc: true,
       enableDecodingColorDepth10Vp9: false,
       enableDecodingColorDepth10HevcRext: true,
@@ -370,12 +343,12 @@ describe("EncodingOptionsConfig", () => {
     }
   });
 
-  it("should reject extra fields due to strict mode", () => {
+  it('should reject extra fields due to strict mode', () => {
     // Arrange
     const invalidConfig: z.input<typeof EncodingOptionsConfigType> = {
       enableHardwareEncoding: true,
       // @ts-expect-error intentional extra field for test
-      unknownField: "should not be allowed",
+      unknownField: 'should not be allowed',
     };
 
     // Act
@@ -387,11 +360,10 @@ describe("EncodingOptionsConfig", () => {
     if (!result.success) {
       expect(result.error.issues).toBeDefined();
       expect(result.error.issues.length).toBeGreaterThan(0);
-      const strictError: z.core.$ZodIssue | undefined =
-        result.error.issues.find(
-          (err: z.core.$ZodIssue) => err.code === "unrecognized_keys",
-        );
-      expect(strictError?.code).toBe("unrecognized_keys");
+      const strictError: z.core.$ZodIssue | undefined = result.error.issues.find(
+        (err: z.core.$ZodIssue) => err.code === 'unrecognized_keys',
+      );
+      expect(strictError?.code).toBe('unrecognized_keys');
     }
   });
 });

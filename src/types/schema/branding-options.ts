@@ -1,4 +1,3 @@
-import type { components } from "../../../generated/schema";
+import type { components } from '@generated/schema';
 
-export type BrandingOptionsDtoSchema =
-  components["schemas"]["BrandingOptionsDto"];
+export type BrandingOptionsDtoSchema = components['schemas']['BrandingOptionsDto'];

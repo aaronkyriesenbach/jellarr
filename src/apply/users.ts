@@ -1,17 +1,10 @@
-import type { JellyfinClient } from "../api/jellyfin.types";
-import { ChangeSetBuilder } from "../lib/changeset";
-import { logger } from "../lib/logger";
-import type {
-  UserConfig,
-  UserConfigList,
-  UserPolicyConfig,
-} from "../types/config/users";
-import type { UserDtoSchema, UserPolicySchema } from "../types/schema/users";
-import {
-  mapUserConfigToCreateSchema,
-  mapUserPolicyConfigToSchema,
-} from "../mappers/users";
-import { applyChangeset, diff, type IChange } from "json-diff-ts";
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
+import type { UserConfig, UserConfigList, UserPolicyConfig } from '@/types/config/users';
+import type { UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
+import { mapUserConfigToCreateSchema, mapUserPolicyConfigToSchema } from '@/mappers/users';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculateNewUsersDiff(
   current: UserDtoSchema[],
@@ -42,9 +35,7 @@ export function calculateUserPolicyDiff(
   current: UserPolicySchema,
   desired: UserPolicyConfig,
 ): UserPolicySchema | undefined {
-  const patch: IChange[] = new ChangeSetBuilder(
-    diff(current, mapUserPolicyConfigToSchema(desired)),
-  )
+  const patch: IChange[] = new ChangeSetBuilder(diff(current, mapUserPolicyConfigToSchema(desired)))
     .atomize()
     .withoutRemoves()
     .toArray();
@@ -69,13 +60,11 @@ export function calculateUserPoliciesDiff(
       (curr: UserDtoSchema) => curr.Name === userConfig.name,
     );
 
-    if (
-      currentUserDtoSchema?.Id &&
-      currentUserDtoSchema.Policy &&
-      userConfig.policy
-    ) {
-      const userPolicyDiff: UserPolicySchema | undefined =
-        calculateUserPolicyDiff(currentUserDtoSchema.Policy, userConfig.policy);
+    if (currentUserDtoSchema?.Id && currentUserDtoSchema.Policy && userConfig.policy) {
+      const userPolicyDiff: UserPolicySchema | undefined = calculateUserPolicyDiff(
+        currentUserDtoSchema.Policy,
+        userConfig.policy,
+      );
 
       if (userPolicyDiff) {
         logger.info(`Updating user policy: ${userConfig.name}`);

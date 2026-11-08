@@ -1,17 +1,17 @@
-import { logger } from "../lib/logger";
-import type { JellyfinClient } from "../api/jellyfin.types";
+import { logger } from '@/lib/logger';
+import type { JellyfinClient } from '@/api/jellyfin.types';
 import type {
   PluginConfig,
   PluginConfigList,
   PluginConfigurationConfig,
-} from "../types/config/plugins";
+} from '@/types/config/plugins';
 import type {
   PluginInfoSchema,
   BasePluginConfigurationSchema,
   PluginConfigurationSchema,
-} from "../types/schema/plugins";
-import { ChangeSetBuilder } from "../lib/changeset";
-import { applyChangeset, diff, type IChange } from "json-diff-ts";
+} from '@/types/schema/plugins';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculatePluginsToInstall(
   installedPlugins: PluginInfoSchema[],
@@ -21,9 +21,7 @@ export function calculatePluginsToInstall(
 
   const pluginsToInstall: PluginConfig[] = desired.filter(
     (desiredPlugin: PluginConfig) =>
-      !installedPlugins.find(
-        (plugin: PluginInfoSchema) => plugin.Name === desiredPlugin.name,
-      ),
+      !installedPlugins.find((plugin: PluginInfoSchema) => plugin.Name === desiredPlugin.name),
   );
 
   pluginsToInstall.forEach((plugin: PluginConfig) => {
@@ -48,10 +46,7 @@ export async function getPluginConfigurationSchemaByName(
   client: JellyfinClient,
   current: PluginInfoSchema[],
 ): Promise<Map<string, PluginConfigurationSchema>> {
-  const pluginConfigurationSchemaByName: Map<
-    string,
-    PluginConfigurationSchema
-  > = new Map();
+  const pluginConfigurationSchemaByName: Map<string, PluginConfigurationSchema> = new Map();
 
   for (const pluginInfo of current) {
     if (pluginInfo.Id && pluginInfo.Name) {
@@ -90,10 +85,7 @@ export function calculatePluginConfigurationsDiff(
 ): Map<string, BasePluginConfigurationSchema> | undefined {
   if (desired.length === 0) return undefined;
 
-  const pluginConfigurationsToUpdate: Map<
-    string,
-    BasePluginConfigurationSchema
-  > = new Map();
+  const pluginConfigurationsToUpdate: Map<string, BasePluginConfigurationSchema> = new Map();
 
   desired.forEach((desiredPluginConfiguration: PluginConfig) => {
     if (desiredPluginConfiguration.configuration) {
@@ -108,21 +100,14 @@ export function calculatePluginConfigurationsDiff(
           );
 
         if (configurationDiff) {
-          logger.info(
-            `Updating plugin configuration: ${desiredPluginConfiguration.name}`,
-          );
-          pluginConfigurationsToUpdate.set(
-            currentPluginConfiguration.id,
-            configurationDiff,
-          );
+          logger.info(`Updating plugin configuration: ${desiredPluginConfiguration.name}`);
+          pluginConfigurationsToUpdate.set(currentPluginConfiguration.id, configurationDiff);
         }
       }
     }
   });
 
-  return pluginConfigurationsToUpdate.size > 0
-    ? pluginConfigurationsToUpdate
-    : undefined;
+  return pluginConfigurationsToUpdate.size > 0 ? pluginConfigurationsToUpdate : undefined;
 }
 
 export async function applyPluginConfigurations(

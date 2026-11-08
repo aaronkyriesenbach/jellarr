@@ -1,10 +1,10 @@
-import { logger } from "../lib/logger";
-import type { JellyfinClient } from "../api/jellyfin.types";
-import { mapEncodingOptionsConfigToSchema } from "../mappers/encoding-options";
-import { type EncodingOptionsConfig } from "../types/config/encoding-options";
-import { type EncodingOptionsSchema } from "../types/schema/encoding-options";
-import { applyChangeset, diff, type IChange } from "json-diff-ts";
-import { ChangeSetBuilder } from "../lib/changeset";
+import { logger } from '@/lib/logger';
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import { mapEncodingOptionsConfigToSchema } from '@/mappers/encoding-options';
+import { type EncodingOptionsConfig } from '@/types/config/encoding-options';
+import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
+import { ChangeSetBuilder } from '@/lib/changeset';
 
 export function calculateEncodingDiff(
   current: EncodingOptionsSchema,
@@ -15,7 +15,7 @@ export function calculateEncodingDiff(
   const patch: IChange[] = [
     ...new ChangeSetBuilder(
       diff(current, next, {
-        keysToSkip: ["HardwareDecodingCodecs"],
+        keysToSkip: ['HardwareDecodingCodecs'],
         treatTypeChangeAsReplace: false,
       }),
     )
@@ -24,11 +24,11 @@ export function calculateEncodingDiff(
 
     ...new ChangeSetBuilder(
       diff(current, next, {
-        embeddedObjKeys: { HardwareDecodingCodecs: "$value" },
+        embeddedObjKeys: { HardwareDecodingCodecs: '$value' },
         treatTypeChangeAsReplace: false,
       }),
     )
-      .withKey("HardwareDecodingCodecs")
+      .withKey('HardwareDecodingCodecs')
       .withoutRemoves()
       .toArray(),
   ];

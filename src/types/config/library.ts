@@ -1,16 +1,16 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const VirtualFolderConfigType: z.ZodObject<{
   name: z.ZodString;
   collectionType: z.ZodEnum<{
-    movies: "movies";
-    tvshows: "tvshows";
-    music: "music";
-    musicvideos: "musicvideos";
-    homevideos: "homevideos";
-    boxsets: "boxsets";
-    books: "books";
-    mixed: "mixed";
+    movies: 'movies';
+    tvshows: 'tvshows';
+    music: 'music';
+    musicvideos: 'musicvideos';
+    homevideos: 'homevideos';
+    boxsets: 'boxsets';
+    books: 'books';
+    mixed: 'mixed';
   }>;
   libraryOptions: z.ZodObject<{
     pathInfos: z.ZodArray<
@@ -23,20 +23,18 @@ export const VirtualFolderConfigType: z.ZodObject<{
   .object({
     name: z.string().min(1),
     collectionType: z.enum([
-      "movies",
-      "tvshows",
-      "music",
-      "musicvideos",
-      "homevideos",
-      "boxsets",
-      "books",
-      "mixed",
+      'movies',
+      'tvshows',
+      'music',
+      'musicvideos',
+      'homevideos',
+      'boxsets',
+      'books',
+      'mixed',
     ]),
     libraryOptions: z
       .object({
-        pathInfos: z
-          .array(z.object({ path: z.string().min(1) }).strict())
-          .min(1),
+        pathInfos: z.array(z.object({ path: z.string().min(1) }).strict()).min(1),
       })
       .strict(),
   })

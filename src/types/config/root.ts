@@ -1,11 +1,11 @@
-import { z } from "zod";
-import { SystemConfigType } from "./system";
-import { EncodingOptionsConfigType } from "./encoding-options";
-import { LibraryConfigType } from "./library";
-import { BrandingOptionsConfigType } from "./branding-options";
-import { UserConfigListType } from "./users";
-import { StartupConfigType } from "./startup";
-import { PluginConfigListType } from "./plugins";
+import { z } from 'zod';
+import { SystemConfigType } from '@/types/config/system';
+import { EncodingOptionsConfigType } from '@/types/config/encoding-options';
+import { LibraryConfigType } from '@/types/config/library';
+import { BrandingOptionsConfigType } from '@/types/config/branding-options';
+import { UserConfigListType } from '@/types/config/users';
+import { StartupConfigType } from '@/types/config/startup';
+import { PluginConfigListType } from '@/types/config/plugins';
 
 export const RootConfigType: z.ZodObject<{
   version: z.ZodNumber;
@@ -19,8 +19,8 @@ export const RootConfigType: z.ZodObject<{
   startup: z.ZodOptional<typeof StartupConfigType>;
 }> = z
   .object({
-    version: z.number().int().positive("Version must be a positive integer"),
-    base_url: z.url({ message: "Base URL must be a valid URL" }),
+    version: z.number().int().positive('Version must be a positive integer'),
+    base_url: z.url({ message: 'Base URL must be a valid URL' }),
     system: SystemConfigType,
     encoding: EncodingOptionsConfigType.optional(),
     library: LibraryConfigType.optional(),

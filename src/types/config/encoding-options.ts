@@ -1,17 +1,17 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const EncodingOptionsConfigType: z.ZodObject<{
   enableHardwareEncoding: z.ZodOptional<z.ZodBoolean>;
   hardwareAccelerationType: z.ZodOptional<
     z.ZodEnum<{
-      none: "none";
-      amf: "amf";
-      qsv: "qsv";
-      nvenc: "nvenc";
-      v4l2m2m: "v4l2m2m";
-      vaapi: "vaapi";
-      videotoolbox: "videotoolbox";
-      rkmpp: "rkmpp";
+      none: 'none';
+      amf: 'amf';
+      qsv: 'qsv';
+      nvenc: 'nvenc';
+      v4l2m2m: 'v4l2m2m';
+      vaapi: 'vaapi';
+      videotoolbox: 'videotoolbox';
+      rkmpp: 'rkmpp';
     }>
   >;
   vaapiDevice: z.ZodOptional<z.ZodString>;
@@ -19,13 +19,13 @@ export const EncodingOptionsConfigType: z.ZodObject<{
   hardwareDecodingCodecs: z.ZodOptional<
     z.ZodArray<
       z.ZodEnum<{
-        h264: "h264";
-        hevc: "hevc";
-        mpeg2video: "mpeg2video";
-        vc1: "vc1";
-        vp8: "vp8";
-        vp9: "vp9";
-        av1: "av1";
+        h264: 'h264';
+        hevc: 'hevc';
+        mpeg2video: 'mpeg2video';
+        vc1: 'vc1';
+        vp8: 'vp8';
+        vp9: 'vp9';
+        av1: 'av1';
       }>
     >
   >;
@@ -39,21 +39,12 @@ export const EncodingOptionsConfigType: z.ZodObject<{
   .object({
     enableHardwareEncoding: z.boolean().optional(),
     hardwareAccelerationType: z
-      .enum([
-        "none",
-        "amf",
-        "qsv",
-        "nvenc",
-        "v4l2m2m",
-        "vaapi",
-        "videotoolbox",
-        "rkmpp",
-      ])
+      .enum(['none', 'amf', 'qsv', 'nvenc', 'v4l2m2m', 'vaapi', 'videotoolbox', 'rkmpp'])
       .optional(),
     vaapiDevice: z.string().optional(),
     qsvDevice: z.string().optional(),
     hardwareDecodingCodecs: z
-      .array(z.enum(["h264", "hevc", "mpeg2video", "vc1", "vp8", "vp9", "av1"]))
+      .array(z.enum(['h264', 'hevc', 'mpeg2video', 'vc1', 'vp8', 'vp9', 'av1']))
       .optional(),
     enableDecodingColorDepth10Hevc: z.boolean().optional(),
     enableDecodingColorDepth10Vp9: z.boolean().optional(),

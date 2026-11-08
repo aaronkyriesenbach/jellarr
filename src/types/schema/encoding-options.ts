@@ -1,3 +1,3 @@
-import type { components } from "../../../generated/schema";
+import type { components } from '@generated/schema';
 
-export type EncodingOptionsSchema = components["schemas"]["EncodingOptions"];
+export type EncodingOptionsSchema = components['schemas']['EncodingOptions'];

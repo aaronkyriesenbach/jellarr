@@ -1,21 +1,12 @@
-import { createJellyfinClient } from "../api/jellyfin_client";
-import type { JellyfinClient } from "../api/jellyfin.types";
-import type {
-  ServerConfigurationSchema,
-  PluginRepositorySchema,
-} from "../types/schema/system";
-import type { EncodingOptionsSchema } from "../types/schema/encoding-options";
-import type {
-  VirtualFolderInfoSchema,
-  MediaPathInfoSchema,
-} from "../types/schema/library";
-import type { BrandingOptionsDtoSchema } from "../types/schema/branding-options";
-import type { UserDtoSchema } from "../types/schema/users";
-import type {
-  PluginInfoSchema,
-  BasePluginConfigurationSchema,
-} from "../types/schema/plugins";
-import * as yaml from "yaml";
+import { createJellyfinClient } from '@/api/jellyfin_client';
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import type { ServerConfigurationSchema, PluginRepositorySchema } from '@/types/schema/system';
+import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import type { VirtualFolderInfoSchema, MediaPathInfoSchema } from '@/types/schema/library';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import type { UserDtoSchema } from '@/types/schema/users';
+import type { PluginInfoSchema, BasePluginConfigurationSchema } from '@/types/schema/plugins';
+import * as yaml from 'yaml';
 
 interface PluginWithConfig {
   name: string;
@@ -25,21 +16,14 @@ interface PluginWithConfig {
 export async function runDump(baseUrl: string): Promise<void> {
   const apiKey: string | undefined = process.env.JELLARR_API_KEY;
   if (!apiKey) {
-    throw new Error("JELLARR_API_KEY environment variable is required");
+    throw new Error('JELLARR_API_KEY environment variable is required');
   }
 
   const client: JellyfinClient = createJellyfinClient(baseUrl, apiKey);
 
-  console.error("⚠️  EXPERIMENTAL: Dumping Jellyfin configuration...\n");
+  console.error('⚠️  EXPERIMENTAL: Dumping Jellyfin configuration...\n');
 
-  const [
-    systemConfig,
-    encodingConfig,
-    virtualFolders,
-    brandingConfig,
-    users,
-    plugins,
-  ]: [
+  const [systemConfig, encodingConfig, virtualFolders, brandingConfig, users, plugins]: [
     ServerConfigurationSchema,
     EncodingOptionsSchema,
     VirtualFolderInfoSchema[],
@@ -57,16 +41,17 @@ export async function runDump(baseUrl: string): Promise<void> {
 
   const pluginsWithConfig: PluginWithConfig[] = await Promise.all(
     plugins.map(async (plugin: PluginInfoSchema): Promise<PluginWithConfig> => {
-      if (!plugin.Id) return { name: plugin.Name ?? "unknown" };
+      if (!plugin.Id) return { name: plugin.Name ?? 'unknown' };
       try {
-        const pluginConfig: BasePluginConfigurationSchema =
-          await client.getPluginConfiguration(plugin.Id);
+        const pluginConfig: BasePluginConfigurationSchema = await client.getPluginConfiguration(
+          plugin.Id,
+        );
         return {
-          name: plugin.Name ?? "unknown",
+          name: plugin.Name ?? 'unknown',
           configuration: pluginConfig,
         };
       } catch {
-        return { name: plugin.Name ?? "unknown" };
+        return { name: plugin.Name ?? 'unknown' };
       }
     }),
   );
@@ -77,16 +62,13 @@ export async function runDump(baseUrl: string): Promise<void> {
 
     system: {
       enableMetrics: systemConfig.EnableMetrics,
-      pluginRepositories: systemConfig.PluginRepositories?.map(
-        (repo: PluginRepositorySchema) => ({
-          name: repo.Name ?? "",
-          url: repo.Url ?? "",
-          enabled: repo.Enabled ?? false,
-        }),
-      ),
+      pluginRepositories: systemConfig.PluginRepositories?.map((repo: PluginRepositorySchema) => ({
+        name: repo.Name ?? '',
+        url: repo.Url ?? '',
+        enabled: repo.Enabled ?? false,
+      })),
       trickplayOptions: {
-        enableHwAcceleration:
-          systemConfig.TrickplayOptions?.EnableHwAcceleration,
+        enableHwAcceleration: systemConfig.TrickplayOptions?.EnableHwAcceleration,
         enableHwEncoding: systemConfig.TrickplayOptions?.EnableHwEncoding,
       },
     },
@@ -97,26 +79,22 @@ export async function runDump(baseUrl: string): Promise<void> {
       vaapiDevice: encodingConfig.VaapiDevice,
       qsvDevice: encodingConfig.QsvDevice,
       hardwareDecodingCodecs: encodingConfig.HardwareDecodingCodecs,
-      enableDecodingColorDepth10Hevc:
-        encodingConfig.EnableDecodingColorDepth10Hevc,
-      enableDecodingColorDepth10Vp9:
-        encodingConfig.EnableDecodingColorDepth10Vp9,
-      enableDecodingColorDepth10HevcRext:
-        encodingConfig.EnableDecodingColorDepth10HevcRext,
-      enableDecodingColorDepth12HevcRext:
-        encodingConfig.EnableDecodingColorDepth12HevcRext,
+      enableDecodingColorDepth10Hevc: encodingConfig.EnableDecodingColorDepth10Hevc,
+      enableDecodingColorDepth10Vp9: encodingConfig.EnableDecodingColorDepth10Vp9,
+      enableDecodingColorDepth10HevcRext: encodingConfig.EnableDecodingColorDepth10HevcRext,
+      enableDecodingColorDepth12HevcRext: encodingConfig.EnableDecodingColorDepth12HevcRext,
       allowHevcEncoding: encodingConfig.AllowHevcEncoding,
       allowAv1Encoding: encodingConfig.AllowAv1Encoding,
     },
 
     library: {
       virtualFolders: virtualFolders.map((folder: VirtualFolderInfoSchema) => ({
-        name: folder.Name ?? "",
-        collectionType: folder.CollectionType ?? "mixed",
+        name: folder.Name ?? '',
+        collectionType: folder.CollectionType ?? 'mixed',
         libraryOptions: {
           pathInfos:
             folder.LibraryOptions?.PathInfos?.map((p: MediaPathInfoSchema) => ({
-              path: p.Path ?? "",
+              path: p.Path ?? '',
             })) ?? [],
         },
       })),
@@ -129,7 +107,7 @@ export async function runDump(baseUrl: string): Promise<void> {
     },
 
     users: users.map((user: UserDtoSchema) => ({
-      name: user.Name ?? "",
+      name: user.Name ?? '',
       policy: {
         isAdministrator: user.Policy?.IsAdministrator,
         loginAttemptsBeforeLockout: user.Policy?.LoginAttemptsBeforeLockout,
@@ -141,7 +119,5 @@ export async function runDump(baseUrl: string): Promise<void> {
 
   console.log(yaml.stringify(config));
 
-  console.error(
-    "\n⚠️  Note: User passwords cannot be exported. Add them manually.",
-  );
+  console.error('\n⚠️  Note: User passwords cannot be exported. Add them manually.');
 }

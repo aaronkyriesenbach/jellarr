@@ -1,17 +1,16 @@
-import type { BrandingOptionsConfig } from "../types/config/branding-options";
-import type { BrandingOptionsDtoSchema } from "../types/schema/branding-options";
-import { mapBrandingOptionsConfigToSchema } from "../mappers/branding-options";
-import type { JellyfinClient } from "../api/jellyfin.types";
-import { logger } from "../lib/logger";
-import { diff, applyChangeset, type IChange } from "json-diff-ts";
-import { ChangeSetBuilder } from "../lib/changeset";
+import type { BrandingOptionsConfig } from '@/types/config/branding-options';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import { mapBrandingOptionsConfigToSchema } from '@/mappers/branding-options';
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import { logger } from '@/lib/logger';
+import { diff, applyChangeset, type IChange } from 'json-diff-ts';
+import { ChangeSetBuilder } from '@/lib/changeset';
 
 export function calculateBrandingOptionsDiff(
   current: BrandingOptionsDtoSchema,
   desired: BrandingOptionsConfig,
 ): BrandingOptionsDtoSchema | undefined {
-  const next: BrandingOptionsDtoSchema =
-    mapBrandingOptionsConfigToSchema(desired);
+  const next: BrandingOptionsDtoSchema = mapBrandingOptionsConfigToSchema(desired);
 
   const patch: IChange[] = new ChangeSetBuilder(
     diff(current, next, {

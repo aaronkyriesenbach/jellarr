@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import {
   calculatePluginsToInstall,
   installPlugins,
@@ -6,20 +6,20 @@ import {
   calculatePluginConfigurationDiff,
   calculatePluginConfigurationsDiff,
   applyPluginConfigurations,
-} from "../../src/apply/plugins";
-import type { JellyfinClient } from "../../src/api/jellyfin.types";
+} from '@/apply/plugins';
+import type { JellyfinClient } from '@/api/jellyfin.types';
 import type {
   PluginConfig,
   PluginConfigList,
   PluginConfigurationConfig,
-} from "../../src/types/config/plugins";
+} from '@/types/config/plugins';
 import type {
   PluginInfoSchema,
   BasePluginConfigurationSchema,
   PluginConfigurationSchema,
-} from "../../src/types/schema/plugins";
+} from '@/types/schema/plugins';
 
-vi.mock("../../src/lib/logger", () => ({
+vi.mock('@/lib/logger', () => ({
   logger: {
     info: vi.fn(),
     warn: vi.fn(),
@@ -27,158 +27,128 @@ vi.mock("../../src/lib/logger", () => ({
   },
 }));
 
-describe("calculatePluginsToInstall", () => {
+describe('calculatePluginsToInstall', () => {
   const installedPlugins: PluginInfoSchema[] = [
     {
-      Name: "Trakt",
-      Version: "26.0.0",
-      Id: "plugin-1-id",
-      Status: "Active",
+      Name: 'Trakt',
+      Version: '26.0.0',
+      Id: 'plugin-1-id',
+      Status: 'Active',
     } as PluginInfoSchema,
     {
-      Name: "Playback Reporting",
-      Version: "10.0.0",
-      Id: "plugin-2-id",
-      Status: "Active",
+      Name: 'Playback Reporting',
+      Version: '10.0.0',
+      Id: 'plugin-2-id',
+      Status: 'Active',
     } as PluginInfoSchema,
   ];
 
-  it("should return undefined when no plugins desired", () => {
+  it('should return undefined when no plugins desired', () => {
     // Arrange
     const config: PluginConfigList = [];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined when all desired plugins already installed", () => {
+  it('should return undefined when all desired plugins already installed', () => {
     // Arrange
-    const config: PluginConfigList = [
-      { name: "Trakt" },
-      { name: "Playback Reporting" },
-    ];
+    const config: PluginConfigList = [{ name: 'Trakt' }, { name: 'Playback Reporting' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeUndefined();
   });
 
-  it("should return plugins to install when new plugins desired", () => {
+  it('should return plugins to install when new plugins desired', () => {
     // Arrange
-    const config: PluginConfigList = [{ name: "Trakt" }, { name: "Fanart" }];
+    const config: PluginConfigList = [{ name: 'Trakt' }, { name: 'Fanart' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toHaveLength(1);
-    expect(result?.[0]).toEqual({ name: "Fanart" });
+    expect(result?.[0]).toEqual({ name: 'Fanart' });
   });
 
-  it("should return multiple plugins when multiple new plugins desired", () => {
+  it('should return multiple plugins when multiple new plugins desired', () => {
     // Arrange
-    const config: PluginConfigList = [
-      { name: "Fanart" },
-      { name: "TMDb Box Sets" },
-    ];
+    const config: PluginConfigList = [{ name: 'Fanart' }, { name: 'TMDb Box Sets' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toHaveLength(2);
-    expect(result?.[0]).toEqual({ name: "Fanart" });
-    expect(result?.[1]).toEqual({ name: "TMDb Box Sets" });
+    expect(result?.[0]).toEqual({ name: 'Fanart' });
+    expect(result?.[1]).toEqual({ name: 'TMDb Box Sets' });
   });
 
-  it("should handle mixed existing and new plugins", () => {
+  it('should handle mixed existing and new plugins', () => {
     // Arrange
     const config: PluginConfigList = [
-      { name: "Trakt" },
-      { name: "Fanart" },
-      { name: "Playback Reporting" },
-      { name: "TMDb Box Sets" },
+      { name: 'Trakt' },
+      { name: 'Fanart' },
+      { name: 'Playback Reporting' },
+      { name: 'TMDb Box Sets' },
     ];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toHaveLength(2);
-    expect(result?.[0]).toEqual({ name: "Fanart" });
-    expect(result?.[1]).toEqual({ name: "TMDb Box Sets" });
+    expect(result?.[0]).toEqual({ name: 'Fanart' });
+    expect(result?.[1]).toEqual({ name: 'TMDb Box Sets' });
   });
 
-  it("should handle empty installed plugins list", () => {
+  it('should handle empty installed plugins list', () => {
     // Arrange
-    const config: PluginConfigList = [{ name: "Trakt" }];
+    const config: PluginConfigList = [{ name: 'Trakt' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      [],
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall([], config);
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toHaveLength(1);
-    expect(result?.[0]).toEqual({ name: "Trakt" });
+    expect(result?.[0]).toEqual({ name: 'Trakt' });
   });
 
-  it("should handle order-independent comparison", () => {
+  it('should handle order-independent comparison', () => {
     // Arrange
-    const config: PluginConfigList = [
-      { name: "Playback Reporting" },
-      { name: "Trakt" },
-    ];
+    const config: PluginConfigList = [{ name: 'Playback Reporting' }, { name: 'Trakt' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeUndefined();
   });
 
-  it("should handle undefined plugin names in installed plugins", () => {
+  it('should handle undefined plugin names in installed plugins', () => {
     // Arrange
     const installedWithUndefined: PluginInfoSchema[] = [
       {
         Name: undefined,
-        Id: "plugin-1-id",
+        Id: 'plugin-1-id',
       } as PluginInfoSchema,
       {
-        Name: "Trakt",
-        Id: "plugin-2-id",
+        Name: 'Trakt',
+        Id: 'plugin-2-id',
       } as PluginInfoSchema,
     ];
 
-    const config: PluginConfigList = [{ name: "Trakt" }];
+    const config: PluginConfigList = [{ name: 'Trakt' }];
 
     // Act
     const result: PluginConfig[] | undefined = calculatePluginsToInstall(
@@ -190,24 +160,21 @@ describe("calculatePluginsToInstall", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should be case-sensitive when matching plugin names", () => {
+  it('should be case-sensitive when matching plugin names', () => {
     // Arrange
-    const config: PluginConfigList = [{ name: "trakt" }];
+    const config: PluginConfigList = [{ name: 'trakt' }];
 
     // Act
-    const result: PluginConfig[] | undefined = calculatePluginsToInstall(
-      installedPlugins,
-      config,
-    );
+    const result: PluginConfig[] | undefined = calculatePluginsToInstall(installedPlugins, config);
 
     // Assert
     expect(result).toBeDefined();
     expect(result).toHaveLength(1);
-    expect(result?.[0]).toEqual({ name: "trakt" });
+    expect(result?.[0]).toEqual({ name: 'trakt' });
   });
 });
 
-describe("installPlugins", () => {
+describe('installPlugins', () => {
   let mockClient: JellyfinClient;
   let installPackageSpy: Mock;
 
@@ -219,7 +186,7 @@ describe("installPlugins", () => {
     } as unknown as JellyfinClient;
   });
 
-  it("should do nothing when plugins is undefined", async () => {
+  it('should do nothing when plugins is undefined', async () => {
     // Act
     await installPlugins(mockClient, undefined);
 
@@ -227,9 +194,9 @@ describe("installPlugins", () => {
     expect(installPackageSpy).not.toHaveBeenCalled();
   });
 
-  it("should install single plugin", async () => {
+  it('should install single plugin', async () => {
     // Arrange
-    const pluginsToInstall: PluginConfig[] = [{ name: "Trakt" }];
+    const pluginsToInstall: PluginConfig[] = [{ name: 'Trakt' }];
     installPackageSpy.mockResolvedValue(undefined);
 
     // Act
@@ -237,15 +204,15 @@ describe("installPlugins", () => {
 
     // Assert
     expect(installPackageSpy).toHaveBeenCalledTimes(1);
-    expect(installPackageSpy).toHaveBeenCalledWith("Trakt");
+    expect(installPackageSpy).toHaveBeenCalledWith('Trakt');
   });
 
-  it("should install multiple plugins", async () => {
+  it('should install multiple plugins', async () => {
     // Arrange
     const pluginsToInstall: PluginConfig[] = [
-      { name: "Trakt" },
-      { name: "Fanart" },
-      { name: "Playback Reporting" },
+      { name: 'Trakt' },
+      { name: 'Fanart' },
+      { name: 'Playback Reporting' },
     ];
     installPackageSpy.mockResolvedValue(undefined);
 
@@ -254,12 +221,12 @@ describe("installPlugins", () => {
 
     // Assert
     expect(installPackageSpy).toHaveBeenCalledTimes(3);
-    expect(installPackageSpy).toHaveBeenNthCalledWith(1, "Trakt");
-    expect(installPackageSpy).toHaveBeenNthCalledWith(2, "Fanart");
-    expect(installPackageSpy).toHaveBeenNthCalledWith(3, "Playback Reporting");
+    expect(installPackageSpy).toHaveBeenNthCalledWith(1, 'Trakt');
+    expect(installPackageSpy).toHaveBeenNthCalledWith(2, 'Fanart');
+    expect(installPackageSpy).toHaveBeenNthCalledWith(3, 'Playback Reporting');
   });
 
-  it("should handle empty plugins list", async () => {
+  it('should handle empty plugins list', async () => {
     // Arrange
     const pluginsToInstall: PluginConfig[] = [];
 
@@ -270,11 +237,11 @@ describe("installPlugins", () => {
     expect(installPackageSpy).not.toHaveBeenCalled();
   });
 
-  it("should install plugins with spaces in name", async () => {
+  it('should install plugins with spaces in name', async () => {
     // Arrange
     const pluginsToInstall: PluginConfig[] = [
-      { name: "Playback Reporting" },
-      { name: "TMDb Box Sets" },
+      { name: 'Playback Reporting' },
+      { name: 'TMDb Box Sets' },
     ];
     installPackageSpy.mockResolvedValue(undefined);
 
@@ -283,12 +250,12 @@ describe("installPlugins", () => {
 
     // Assert
     expect(installPackageSpy).toHaveBeenCalledTimes(2);
-    expect(installPackageSpy).toHaveBeenNthCalledWith(1, "Playback Reporting");
-    expect(installPackageSpy).toHaveBeenNthCalledWith(2, "TMDb Box Sets");
+    expect(installPackageSpy).toHaveBeenNthCalledWith(1, 'Playback Reporting');
+    expect(installPackageSpy).toHaveBeenNthCalledWith(2, 'TMDb Box Sets');
   });
 });
 
-describe("getPluginConfigurationSchemaByName", () => {
+describe('getPluginConfigurationSchemaByName', () => {
   let mockClient: JellyfinClient;
   let getPluginConfigurationSpy: Mock;
 
@@ -300,24 +267,26 @@ describe("getPluginConfigurationSchemaByName", () => {
     } as unknown as JellyfinClient;
   });
 
-  it("should return empty map when no plugins", async () => {
+  it('should return empty map when no plugins', async () => {
     // Arrange
     const installedPlugins: PluginInfoSchema[] = [];
 
     // Act
-    const result: Map<string, PluginConfigurationSchema> =
-      await getPluginConfigurationSchemaByName(mockClient, installedPlugins);
+    const result: Map<string, PluginConfigurationSchema> = await getPluginConfigurationSchemaByName(
+      mockClient,
+      installedPlugins,
+    );
 
     // Assert
     expect(result.size).toBe(0);
     expect(getPluginConfigurationSpy).not.toHaveBeenCalled();
   });
 
-  it("should return map with plugin configurations", async () => {
+  it('should return map with plugin configurations', async () => {
     // Arrange
     const installedPlugins: PluginInfoSchema[] = [
-      { Name: "Trakt", Id: "trakt-id" } as PluginInfoSchema,
-      { Name: "Fanart", Id: "fanart-id" } as PluginInfoSchema,
+      { Name: 'Trakt', Id: 'trakt-id' } as PluginInfoSchema,
+      { Name: 'Fanart', Id: 'fanart-id' } as PluginInfoSchema,
     ];
     const traktConfig: BasePluginConfigurationSchema = {
       TraktUsers: [],
@@ -330,29 +299,31 @@ describe("getPluginConfigurationSchemaByName", () => {
       .mockResolvedValueOnce(fanartConfig);
 
     // Act
-    const result: Map<string, PluginConfigurationSchema> =
-      await getPluginConfigurationSchemaByName(mockClient, installedPlugins);
+    const result: Map<string, PluginConfigurationSchema> = await getPluginConfigurationSchemaByName(
+      mockClient,
+      installedPlugins,
+    );
 
     // Assert
     expect(result.size).toBe(2);
-    expect(result.get("Trakt")).toEqual({
-      id: "trakt-id",
+    expect(result.get('Trakt')).toEqual({
+      id: 'trakt-id',
       configuration: traktConfig,
     });
-    expect(result.get("Fanart")).toEqual({
-      id: "fanart-id",
+    expect(result.get('Fanart')).toEqual({
+      id: 'fanart-id',
       configuration: fanartConfig,
     });
     expect(getPluginConfigurationSpy).toHaveBeenCalledTimes(2);
-    expect(getPluginConfigurationSpy).toHaveBeenCalledWith("trakt-id");
-    expect(getPluginConfigurationSpy).toHaveBeenCalledWith("fanart-id");
+    expect(getPluginConfigurationSpy).toHaveBeenCalledWith('trakt-id');
+    expect(getPluginConfigurationSpy).toHaveBeenCalledWith('fanart-id');
   });
 
-  it("should skip plugins without Id", async () => {
+  it('should skip plugins without Id', async () => {
     // Arrange
     const installedPlugins: PluginInfoSchema[] = [
-      { Name: "Trakt", Id: undefined } as PluginInfoSchema,
-      { Name: "Fanart", Id: "fanart-id" } as PluginInfoSchema,
+      { Name: 'Trakt', Id: undefined } as PluginInfoSchema,
+      { Name: 'Fanart', Id: 'fanart-id' } as PluginInfoSchema,
     ];
     const fanartConfig: BasePluginConfigurationSchema = {
       EnableImages: true,
@@ -360,23 +331,25 @@ describe("getPluginConfigurationSchemaByName", () => {
     getPluginConfigurationSpy.mockResolvedValueOnce(fanartConfig);
 
     // Act
-    const result: Map<string, PluginConfigurationSchema> =
-      await getPluginConfigurationSchemaByName(mockClient, installedPlugins);
+    const result: Map<string, PluginConfigurationSchema> = await getPluginConfigurationSchemaByName(
+      mockClient,
+      installedPlugins,
+    );
 
     // Assert
     expect(result.size).toBe(1);
-    expect(result.get("Fanart")).toEqual({
-      id: "fanart-id",
+    expect(result.get('Fanart')).toEqual({
+      id: 'fanart-id',
       configuration: fanartConfig,
     });
     expect(getPluginConfigurationSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("should skip plugins without Name", async () => {
+  it('should skip plugins without Name', async () => {
     // Arrange
     const installedPlugins: PluginInfoSchema[] = [
-      { Name: undefined, Id: "trakt-id" } as PluginInfoSchema,
-      { Name: "Fanart", Id: "fanart-id" } as PluginInfoSchema,
+      { Name: undefined, Id: 'trakt-id' } as PluginInfoSchema,
+      { Name: 'Fanart', Id: 'fanart-id' } as PluginInfoSchema,
     ];
     const fanartConfig: BasePluginConfigurationSchema = {
       EnableImages: true,
@@ -384,21 +357,23 @@ describe("getPluginConfigurationSchemaByName", () => {
     getPluginConfigurationSpy.mockResolvedValueOnce(fanartConfig);
 
     // Act
-    const result: Map<string, PluginConfigurationSchema> =
-      await getPluginConfigurationSchemaByName(mockClient, installedPlugins);
+    const result: Map<string, PluginConfigurationSchema> = await getPluginConfigurationSchemaByName(
+      mockClient,
+      installedPlugins,
+    );
 
     // Assert
     expect(result.size).toBe(1);
-    expect(result.get("Fanart")).toEqual({
-      id: "fanart-id",
+    expect(result.get('Fanart')).toEqual({
+      id: 'fanart-id',
       configuration: fanartConfig,
     });
     expect(getPluginConfigurationSpy).toHaveBeenCalledTimes(1);
   });
 });
 
-describe("calculatePluginConfigurationDiff", () => {
-  it("should return undefined when no changes", () => {
+describe('calculatePluginConfigurationDiff', () => {
+  it('should return undefined when no changes', () => {
     // Arrange
     const current: BasePluginConfigurationSchema = {
       TraktUsers: [{ ExtraLogging: false }],
@@ -408,14 +383,16 @@ describe("calculatePluginConfigurationDiff", () => {
     };
 
     // Act
-    const result: BasePluginConfigurationSchema | undefined =
-      calculatePluginConfigurationDiff(current, desired);
+    const result: BasePluginConfigurationSchema | undefined = calculatePluginConfigurationDiff(
+      current,
+      desired,
+    );
 
     // Assert
     expect(result).toBeUndefined();
   });
 
-  it("should return updated schema when field changes", () => {
+  it('should return updated schema when field changes', () => {
     // Arrange
     const current: BasePluginConfigurationSchema = {
       TraktUsers: [{ ExtraLogging: false }],
@@ -425,8 +402,10 @@ describe("calculatePluginConfigurationDiff", () => {
     };
 
     // Act
-    const result: BasePluginConfigurationSchema | undefined =
-      calculatePluginConfigurationDiff(current, desired);
+    const result: BasePluginConfigurationSchema | undefined = calculatePluginConfigurationDiff(
+      current,
+      desired,
+    );
 
     // Assert
     expect(result).toBeDefined();
@@ -435,54 +414,52 @@ describe("calculatePluginConfigurationDiff", () => {
     ]);
   });
 
-  it("should preserve existing fields not in desired", () => {
+  it('should preserve existing fields not in desired', () => {
     // Arrange
     const current: BasePluginConfigurationSchema = {
       TraktUsers: [{ ExtraLogging: false }],
-      OtherField: "preserved",
+      OtherField: 'preserved',
     } as unknown as BasePluginConfigurationSchema;
     const desired: PluginConfigurationConfig = {
       TraktUsers: [{ ExtraLogging: true }],
     };
 
     // Act
-    const result: BasePluginConfigurationSchema | undefined =
-      calculatePluginConfigurationDiff(current, desired);
+    const result: BasePluginConfigurationSchema | undefined = calculatePluginConfigurationDiff(
+      current,
+      desired,
+    );
 
     // Assert
     expect(result).toBeDefined();
-    const resultRecord: Record<string, unknown> = result as unknown as Record<
-      string,
-      unknown
-    >;
+    const resultRecord: Record<string, unknown> = result as unknown as Record<string, unknown>;
     expect(resultRecord.TraktUsers).toEqual([{ ExtraLogging: true }]);
-    expect(resultRecord.OtherField).toBe("preserved");
+    expect(resultRecord.OtherField).toBe('preserved');
   });
 
-  it("should add new fields from desired", () => {
+  it('should add new fields from desired', () => {
     // Arrange
     const current: BasePluginConfigurationSchema = {
-      ExistingField: "value",
+      ExistingField: 'value',
     } as unknown as BasePluginConfigurationSchema;
     const desired: PluginConfigurationConfig = {
-      NewField: "new value",
+      NewField: 'new value',
     };
 
     // Act
-    const result: BasePluginConfigurationSchema | undefined =
-      calculatePluginConfigurationDiff(current, desired);
+    const result: BasePluginConfigurationSchema | undefined = calculatePluginConfigurationDiff(
+      current,
+      desired,
+    );
 
     // Assert
     expect(result).toBeDefined();
-    const resultRecord: Record<string, unknown> = result as unknown as Record<
-      string,
-      unknown
-    >;
-    expect(resultRecord.ExistingField).toBe("value");
-    expect(resultRecord.NewField).toBe("new value");
+    const resultRecord: Record<string, unknown> = result as unknown as Record<string, unknown>;
+    expect(resultRecord.ExistingField).toBe('value');
+    expect(resultRecord.NewField).toBe('new value');
   });
 
-  it("should handle nested object changes", () => {
+  it('should handle nested object changes', () => {
     // Arrange
     const current: BasePluginConfigurationSchema = {
       Settings: { Option1: true, Option2: false },
@@ -492,28 +469,30 @@ describe("calculatePluginConfigurationDiff", () => {
     };
 
     // Act
-    const result: BasePluginConfigurationSchema | undefined =
-      calculatePluginConfigurationDiff(current, desired);
+    const result: BasePluginConfigurationSchema | undefined = calculatePluginConfigurationDiff(
+      current,
+      desired,
+    );
 
     // Assert
     expect(result).toBeDefined();
-    const resultRecord: Record<
+    const resultRecord: Record<string, Record<string, boolean>> = result as unknown as Record<
       string,
       Record<string, boolean>
-    > = result as unknown as Record<string, Record<string, boolean>>;
+    >;
     expect(resultRecord.Settings.Option1).toBe(false);
     expect(resultRecord.Settings.Option2).toBe(false);
   });
 });
 
-describe("calculatePluginConfigurationsDiff", () => {
-  it("should return undefined when no plugins desired", () => {
+describe('calculatePluginConfigurationsDiff', () => {
+  it('should return undefined when no plugins desired', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map([
       [
-        "Trakt",
+        'Trakt',
         {
-          id: "trakt-id",
+          id: 'trakt-id',
           configuration: {
             TraktUsers: [],
           } as unknown as BasePluginConfigurationSchema,
@@ -530,20 +509,20 @@ describe("calculatePluginConfigurationsDiff", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined when no plugins have configuration", () => {
+  it('should return undefined when no plugins have configuration', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map([
       [
-        "Trakt",
+        'Trakt',
         {
-          id: "trakt-id",
+          id: 'trakt-id',
           configuration: {
             TraktUsers: [],
           } as unknown as BasePluginConfigurationSchema,
         },
       ],
     ]);
-    const desired: PluginConfigList = [{ name: "Trakt" }];
+    const desired: PluginConfigList = [{ name: 'Trakt' }];
 
     // Act
     const result: Map<string, BasePluginConfigurationSchema> | undefined =
@@ -553,12 +532,10 @@ describe("calculatePluginConfigurationsDiff", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined when plugin not installed", () => {
+  it('should return undefined when plugin not installed', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map();
-    const desired: PluginConfigList = [
-      { name: "Trakt", configuration: { TraktUsers: [] } },
-    ];
+    const desired: PluginConfigList = [{ name: 'Trakt', configuration: { TraktUsers: [] } }];
 
     // Act
     const result: Map<string, BasePluginConfigurationSchema> | undefined =
@@ -568,13 +545,13 @@ describe("calculatePluginConfigurationsDiff", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined when configuration unchanged", () => {
+  it('should return undefined when configuration unchanged', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map([
       [
-        "Trakt",
+        'Trakt',
         {
-          id: "trakt-id",
+          id: 'trakt-id',
           configuration: {
             TraktUsers: [{ ExtraLogging: true }],
           } as unknown as BasePluginConfigurationSchema,
@@ -583,7 +560,7 @@ describe("calculatePluginConfigurationsDiff", () => {
     ]);
     const desired: PluginConfigList = [
       {
-        name: "Trakt",
+        name: 'Trakt',
         configuration: { TraktUsers: [{ ExtraLogging: true }] },
       },
     ];
@@ -596,13 +573,13 @@ describe("calculatePluginConfigurationsDiff", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return map with updated configurations", () => {
+  it('should return map with updated configurations', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map([
       [
-        "Trakt",
+        'Trakt',
         {
-          id: "trakt-id",
+          id: 'trakt-id',
           configuration: {
             TraktUsers: [{ ExtraLogging: false }],
           } as unknown as BasePluginConfigurationSchema,
@@ -611,7 +588,7 @@ describe("calculatePluginConfigurationsDiff", () => {
     ]);
     const desired: PluginConfigList = [
       {
-        name: "Trakt",
+        name: 'Trakt',
         configuration: { TraktUsers: [{ ExtraLogging: true }] },
       },
     ];
@@ -623,28 +600,29 @@ describe("calculatePluginConfigurationsDiff", () => {
     // Assert
     expect(result).toBeDefined();
     expect(result?.size).toBe(1);
-    const config: Record<string, unknown> = result?.get(
-      "trakt-id",
-    ) as unknown as Record<string, unknown>;
+    const config: Record<string, unknown> = result?.get('trakt-id') as unknown as Record<
+      string,
+      unknown
+    >;
     expect(config.TraktUsers).toEqual([{ ExtraLogging: true }]);
   });
 
-  it("should handle multiple plugins with changes", () => {
+  it('should handle multiple plugins with changes', () => {
     // Arrange
     const currentMap: Map<string, PluginConfigurationSchema> = new Map([
       [
-        "Trakt",
+        'Trakt',
         {
-          id: "trakt-id",
+          id: 'trakt-id',
           configuration: {
             TraktUsers: [{ ExtraLogging: false }],
           } as unknown as BasePluginConfigurationSchema,
         },
       ],
       [
-        "Fanart",
+        'Fanart',
         {
-          id: "fanart-id",
+          id: 'fanart-id',
           configuration: {
             EnableImages: false,
           } as unknown as BasePluginConfigurationSchema,
@@ -653,10 +631,10 @@ describe("calculatePluginConfigurationsDiff", () => {
     ]);
     const desired: PluginConfigList = [
       {
-        name: "Trakt",
+        name: 'Trakt',
         configuration: { TraktUsers: [{ ExtraLogging: true }] },
       },
-      { name: "Fanart", configuration: { EnableImages: true } },
+      { name: 'Fanart', configuration: { EnableImages: true } },
     ];
 
     // Act
@@ -666,18 +644,20 @@ describe("calculatePluginConfigurationsDiff", () => {
     // Assert
     expect(result).toBeDefined();
     expect(result?.size).toBe(2);
-    const traktConfig: Record<string, unknown> = result?.get(
-      "trakt-id",
-    ) as unknown as Record<string, unknown>;
+    const traktConfig: Record<string, unknown> = result?.get('trakt-id') as unknown as Record<
+      string,
+      unknown
+    >;
     expect(traktConfig.TraktUsers).toEqual([{ ExtraLogging: true }]);
-    const fanartConfig: Record<string, unknown> = result?.get(
-      "fanart-id",
-    ) as unknown as Record<string, unknown>;
+    const fanartConfig: Record<string, unknown> = result?.get('fanart-id') as unknown as Record<
+      string,
+      unknown
+    >;
     expect(fanartConfig.EnableImages).toBe(true);
   });
 });
 
-describe("applyPluginConfigurations", () => {
+describe('applyPluginConfigurations', () => {
   let mockClient: JellyfinClient;
   let updatePluginConfigurationSpy: Mock;
 
@@ -689,7 +669,7 @@ describe("applyPluginConfigurations", () => {
     } as unknown as JellyfinClient;
   });
 
-  it("should do nothing when configurations is undefined", async () => {
+  it('should do nothing when configurations is undefined', async () => {
     // Act
     await applyPluginConfigurations(mockClient, undefined);
 
@@ -697,13 +677,13 @@ describe("applyPluginConfigurations", () => {
     expect(updatePluginConfigurationSpy).not.toHaveBeenCalled();
   });
 
-  it("should update single plugin configuration", async () => {
+  it('should update single plugin configuration', async () => {
     // Arrange
     const config: BasePluginConfigurationSchema = {
       TraktUsers: [{ ExtraLogging: true }],
     } as unknown as BasePluginConfigurationSchema;
     const configurations: Map<string, BasePluginConfigurationSchema> = new Map([
-      ["trakt-id", config],
+      ['trakt-id', config],
     ]);
     updatePluginConfigurationSpy.mockResolvedValue(undefined);
 
@@ -712,13 +692,10 @@ describe("applyPluginConfigurations", () => {
 
     // Assert
     expect(updatePluginConfigurationSpy).toHaveBeenCalledTimes(1);
-    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith(
-      "trakt-id",
-      config,
-    );
+    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith('trakt-id', config);
   });
 
-  it("should update multiple plugin configurations", async () => {
+  it('should update multiple plugin configurations', async () => {
     // Arrange
     const traktConfig: BasePluginConfigurationSchema = {
       TraktUsers: [{ ExtraLogging: true }],
@@ -727,8 +704,8 @@ describe("applyPluginConfigurations", () => {
       EnableImages: true,
     } as unknown as BasePluginConfigurationSchema;
     const configurations: Map<string, BasePluginConfigurationSchema> = new Map([
-      ["trakt-id", traktConfig],
-      ["fanart-id", fanartConfig],
+      ['trakt-id', traktConfig],
+      ['fanart-id', fanartConfig],
     ]);
     updatePluginConfigurationSpy.mockResolvedValue(undefined);
 
@@ -737,20 +714,13 @@ describe("applyPluginConfigurations", () => {
 
     // Assert
     expect(updatePluginConfigurationSpy).toHaveBeenCalledTimes(2);
-    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith(
-      "trakt-id",
-      traktConfig,
-    );
-    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith(
-      "fanart-id",
-      fanartConfig,
-    );
+    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith('trakt-id', traktConfig);
+    expect(updatePluginConfigurationSpy).toHaveBeenCalledWith('fanart-id', fanartConfig);
   });
 
-  it("should handle empty map", async () => {
+  it('should handle empty map', async () => {
     // Arrange
-    const configurations: Map<string, BasePluginConfigurationSchema> =
-      new Map();
+    const configurations: Map<string, BasePluginConfigurationSchema> = new Map();
 
     // Act
     await applyPluginConfigurations(mockClient, configurations);

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const UserPolicyConfigType: z.ZodObject<{
   isAdministrator: z.ZodOptional<z.ZodBoolean>;
@@ -17,7 +17,7 @@ export const UserConfigType: z.ZodObject<{
   policy: z.ZodOptional<typeof UserPolicyConfigType>;
 }> = z
   .object({
-    name: z.string().min(1, "User name is required"),
+    name: z.string().min(1, 'User name is required'),
     password: z.string().optional(),
     passwordFile: z.string().optional(),
     policy: UserPolicyConfigType.optional(),
@@ -25,10 +25,9 @@ export const UserConfigType: z.ZodObject<{
   .strict()
   .refine(
     (data: { password?: string; passwordFile?: string }) => {
-      const hasPassword: boolean =
-        data.password !== undefined && data.password.trim() !== "";
+      const hasPassword: boolean = data.password !== undefined && data.password.trim() !== '';
       const hasPasswordFile: boolean =
-        data.passwordFile !== undefined && data.passwordFile.trim() !== "";
+        data.passwordFile !== undefined && data.passwordFile.trim() !== '';
       return hasPassword !== hasPasswordFile;
     },
     {
@@ -39,7 +38,6 @@ export const UserConfigType: z.ZodObject<{
 
 export type UserConfig = z.infer<typeof UserConfigType>;
 
-export const UserConfigListType: z.ZodArray<typeof UserConfigType> =
-  z.array(UserConfigType);
+export const UserConfigListType: z.ZodArray<typeof UserConfigType> = z.array(UserConfigType);
 
 export type UserConfigList = z.infer<typeof UserConfigListType>;

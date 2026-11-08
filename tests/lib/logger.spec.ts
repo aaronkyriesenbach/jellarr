@@ -1,48 +1,42 @@
-import { describe, it, expect, vi, type Mock } from "vitest";
-import { logger } from "../../src/lib/logger";
+import { describe, it, expect, vi, type Mock } from 'vitest';
+import { logger } from '@/lib/logger';
 
-describe("lib/logger", () => {
-  it("whenInfoCalled_thenWritesToConsoleLog()", () => {
+describe('lib/logger', () => {
+  it('whenInfoCalled_thenWritesToConsoleLog()', () => {
     // Arrange
-    const spy: Mock = vi
-      .spyOn(console, "log")
-      .mockImplementation(() => undefined);
+    const spy: Mock = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
     // Act
-    logger.info("hello");
+    logger.info('hello');
 
     // Assert
-    expect(spy).toHaveBeenCalledWith("hello");
+    expect(spy).toHaveBeenCalledWith('hello');
 
     spy.mockRestore();
   });
 
-  it("whenWarnCalled_thenWritesToConsoleWarn()", () => {
+  it('whenWarnCalled_thenWritesToConsoleWarn()', () => {
     // Arrange
-    const spy: Mock = vi
-      .spyOn(console, "warn")
-      .mockImplementation(() => undefined);
+    const spy: Mock = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
     // Act
-    logger.warn("w");
+    logger.warn('w');
 
     // Assert
-    expect(spy).toHaveBeenCalledWith("w");
+    expect(spy).toHaveBeenCalledWith('w');
 
     spy.mockRestore();
   });
 
-  it("whenErrorCalled_thenWritesToConsoleError()", () => {
+  it('whenErrorCalled_thenWritesToConsoleError()', () => {
     // Arrange
-    const spy: Mock = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const spy: Mock = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     // Act
-    logger.error("e");
+    logger.error('e');
 
     // Assert
-    expect(spy).toHaveBeenCalledWith("e");
+    expect(spy).toHaveBeenCalledWith('e');
 
     spy.mockRestore();
   });
