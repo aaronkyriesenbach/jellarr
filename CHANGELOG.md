@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1](https://github.com/aaronkyriesenbach/jellarr/compare/jellarr-v0.2.0...jellarr-v0.2.1) (2026-11-08)
+
+
+### Bug Fixes
+
+* read client version from package.json ([88c0a92](https://github.com/aaronkyriesenbach/jellarr/commit/88c0a922ef31b3ec29643f7f6dacb505f1e886f1))
+
 ## [0.2.0](https://github.com/aaronkyriesenbach/jellarr/compare/jellarr-v0.1.0...jellarr-v0.2.0) (2026-11-08)
 
 

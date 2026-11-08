@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  version = "0.2.0"; # x-release-please-version
+  version = "0.2.1"; # x-release-please-version
 
   # Only the manifest and lockfile feed the dependency hash, so editing source
   # files does not invalidate it.
