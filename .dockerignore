@@ -1,5 +1,15 @@
+# Version control and CI metadata are irrelevant to the build.
 .git
-node_modules
-bundle.cjs
+.github
+
+# Docs, Nix tooling and tests are not needed inside the image.
+*.md
 nix
 tests
+flake.nix
+flake.lock
+
+# Local build output and dependencies.
+node_modules
+bundle.cjs
+coverage

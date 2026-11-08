@@ -1,0 +1,16 @@
+---
+pre-commit:
+  commands:
+    lint:
+      priority: 1
+      glob: '*.{ts,mjs}'
+      run: bun run lint
+    typecheck:
+      priority: 2
+      glob: '*.ts'
+      run: bun run typecheck
+    test:
+      priority: 3
+      only:
+        - ref: master
+      run: bun run test
