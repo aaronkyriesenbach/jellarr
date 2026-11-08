@@ -12,6 +12,7 @@
     "noImplicitAny": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@root/*": ["./*"],
       "@generated/*": ["./generated/*"]
     }
   },

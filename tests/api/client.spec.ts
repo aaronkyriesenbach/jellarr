@@ -2,6 +2,7 @@ import { describe, it, expect, vi, type Mock } from 'vitest';
 import { makeClient } from '@/api/client';
 import { type paths } from '@generated/schema';
 import type { Client } from 'openapi-fetch';
+import { version } from '@root/package.json';
 
 describe('api/client', () => {
   it('whenClientCreated_thenHeadersInjectedOnEachRequest()', async () => {
@@ -24,7 +25,7 @@ describe('api/client', () => {
 
       const h: Headers = req.headers;
       expect(h.get('Authorization')).toBe(
-        'MediaBrowser Token="XYZ", Client="jellarr", Device="cli", DeviceId="jellarr", Version="0.1.0"',
+        `MediaBrowser Token="XYZ", Client="jellarr", Device="cli", DeviceId="jellarr", Version="${version}"`,
       );
       expect(h.get('X-Emby-Token')).toBeNull();
       expect(h.get('X-Emby-Authorization')).toBeNull();

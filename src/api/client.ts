@@ -1,5 +1,6 @@
 import createClient, { type Client } from 'openapi-fetch';
 import type { paths } from '@generated/schema';
+import { version } from '@root/package.json';
 
 export function makeClient(baseUrl: string, apiKey: string): Client<paths> {
   const client: Client<paths> = createClient<paths>({
@@ -11,7 +12,7 @@ export function makeClient(baseUrl: string, apiKey: string): Client<paths> {
       const headers: Headers = new Headers(request.headers);
       headers.set(
         'Authorization',
-        `MediaBrowser Token="${apiKey}", Client="jellarr", Device="cli", DeviceId="jellarr", Version="0.1.0"`,
+        `MediaBrowser Token="${apiKey}", Client="jellarr", Device="cli", DeviceId="jellarr", Version="${version}"`,
       );
       return new Request(request, { headers });
     },
