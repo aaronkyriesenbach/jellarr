@@ -2,54 +2,98 @@
   lib,
   pkgs,
   ...
-}:
-pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-  buildPhase = ''
-    runHook preBuild
-    pnpm build
-    runHook postBuild
-  '';
+}: let
+  version = "0.1.0"; # x-release-please-version
 
-  checkPhase = ''
-    runHook preCheck
-    pnpm test
-    runHook postCheck
-  '';
+  # Only the manifest and lockfile feed the dependency hash, so editing source
+  # files does not invalidate it.
+  nodeModules = pkgs.stdenvNoCC.mkDerivation {
+    pname = "jellarr-node-modules";
+    inherit version;
 
-  CI = "true";
+    src = lib.fileset.toSource {
+      root = ../.;
+      fileset = lib.fileset.unions [
+        ../package.json
+        ../bun.lock
+      ];
+    };
 
-  installPhase = ''
-    runHook preInstall
-    install -Dm644 -t $out/share bundle.cjs
-    makeWrapper ${lib.getExe pkgs.nodejs_24} $out/bin/jellarr \
-      --add-flags "$out/share/bundle.cjs"
-    runHook postInstall
-  '';
+    nativeBuildInputs = [pkgs.bun];
 
-  meta = {
-    description = "Declarative Jellyfin configuration engine (TypeScript, bundled)";
-    homepage = "https://github.com/venkyr77/jellarr";
-    license = lib.licenses.agpl3Only;
-    mainProgram = "jellarr";
-    platforms = lib.platforms.all;
+    dontConfigure = true;
+    dontFixup = true;
+
+    buildPhase = ''
+      runHook preBuild
+      export HOME=$TMPDIR
+      export BUN_INSTALL_CACHE_DIR=$TMPDIR/bun-cache
+      # Install optional platform binaries for every os/cpu so the output hash
+      # is identical on all systems.
+      bun install --frozen-lockfile --ignore-scripts --no-progress \
+        --os='*' --cpu='*'
+      runHook postBuild
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -r node_modules $out/node_modules
+      runHook postInstall
+    '';
+
+    outputHash = "sha256-K4WrqAS+X/2gFa3RIkYWxQPe+geRCGsN94Z6vZvYRgU=";
+    outputHashAlgo = "sha256";
+    outputHashMode = "recursive";
   };
+in
+  pkgs.stdenvNoCC.mkDerivation {
+    pname = "jellarr";
+    inherit version;
 
-  nativeBuildInputs = [
-    pkgs.makeBinaryWrapper
-    pkgs.nodejs_24
-    pkgs.pnpm
-    pkgs.pnpmConfigHook
-  ];
+    src = ../.;
 
-  pname = "jellarr";
+    nativeBuildInputs = [
+      pkgs.bun
+      pkgs.makeBinaryWrapper
+      pkgs.nodejs_24
+    ];
 
-  pnpmDeps = pkgs.fetchPnpmDeps {
-    fetcherVersion = 4;
-    hash = "sha256-jo1BjRAjjfNKF0xb5cLCuELSveHeJ98iLPhMDKP1QbI=";
-    inherit (finalAttrs) pname src version;
-  };
+    CI = "true";
 
-  src = ../.;
+    configurePhase = ''
+      runHook preConfigure
+      export HOME=$TMPDIR
+      cp -r ${nodeModules}/node_modules node_modules
+      chmod -R u+w node_modules
+      runHook postConfigure
+    '';
 
-  version = "0.1.0";
-})
+    buildPhase = ''
+      runHook preBuild
+      bun run build
+      runHook postBuild
+    '';
+
+    checkPhase = ''
+      runHook preCheck
+      bun run test
+      runHook postCheck
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      install -Dm644 -t $out/share bundle.cjs
+      makeWrapper ${lib.getExe pkgs.nodejs_24} $out/bin/jellarr \
+        --add-flags "$out/share/bundle.cjs"
+      runHook postInstall
+    '';
+
+    meta = {
+      description = "Declarative Jellyfin configuration engine (TypeScript, bundled)";
+      homepage = "https://github.com/aaronkyriesenbach/jellarr";
+      license = lib.licenses.agpl3Only;
+      mainProgram = "jellarr";
+      platforms = lib.platforms.all;
+    };
+  }
