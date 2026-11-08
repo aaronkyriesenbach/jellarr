@@ -1,0 +1,62 @@
+name: Release and Build Docker Image
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  checks:
+    name: Build, typecheck, lint, and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm eslint
+
+      - name: Test
+        run: pnpm test
+
+  release-please:
+    needs: checks
+    if: >
+      github.ref_name == 'master' &&
+      needs.checks.result == 'success'
+    uses: >-
+      aaronkyriesenbach/workflows/.github/workflows/release-please.yaml@master
+    permissions:
+      contents: write
+      pull-requests: write
+
+  docker:
+    needs: [checks, release-please]
+    if: >
+      always() && needs.checks.result == 'success' &&
+      (github.ref_name != 'master' ||
+        needs.release-please.outputs.release_created == 'true')
+    uses: >-
+      aaronkyriesenbach/workflows/.github/workflows/docker-build-push.yaml@master
+    with:
+      version: ${{ needs.release-please.outputs.version }}
+    permissions:
+      contents: read
+      packages: write
