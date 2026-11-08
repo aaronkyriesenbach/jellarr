@@ -2,13 +2,25 @@
   "name": "jellarr",
   "version": "0.2.0",
   "description": "Declarative configuration management for Jellyfin servers",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronkyriesenbach/jellarr.git"
+  },
+  "homepage": "https://github.com/aaronkyriesenbach/jellarr",
+  "bugs": {
+    "url": "https://github.com/aaronkyriesenbach/jellarr/issues"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "private": true,
   "devDependencies": {
     "@eslint/js": "^9.39.0",
     "@types/node": "^24.9.2",
     "@vitest/coverage-v8": "^4.0.6",
     "esbuild": "^0.25.11",
     "eslint": "^9.38.0",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vitest": "^4.0.6"
@@ -24,10 +36,14 @@
     "zod": "^4.1.12"
   },
   "scripts": {
-    "build": "tsx esbuild.ts",
-    "dev": "tsx src/cli.ts",
+    "build": "bun esbuild.ts",
+    "dev": "bun src/cli/index.ts",
+    "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "typegen": "npx openapi-typescript https://api.jellyfin.org/openapi/jellyfin-openapi-stable.json -o ./generated/schema.d.ts"
-  }
+    "typegen": "bunx openapi-typescript https://api.jellyfin.org/openapi/jellyfin-openapi-stable.json -o ./generated/schema.d.ts"
+  },
+  "trustedDependencies": [
+    "esbuild"
+  ]
 }
