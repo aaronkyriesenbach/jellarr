@@ -1,5 +1,5 @@
 {
-  "bootstrap-sha": "de530bc0bdca2ce0cb0e5d3b5ee00dd1a7e1ec0a",
+  "last-release-sha": "de530bc0bdca2ce0cb0e5d3b5ee00dd1a7e1ec0a",
   "packages": {
     ".": {
       "release-type": "node"
