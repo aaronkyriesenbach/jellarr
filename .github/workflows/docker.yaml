@@ -4,11 +4,16 @@ on:
   push:
     branches:
       - '**'
+  pull_request:
 
 jobs:
   checks:
-    name: Build, typecheck, lint, and test
+    name: Build, typecheck, lint, format, and test
     runs-on: ubuntu-latest
+    # Same-repo PR branches are already covered by the push trigger.
+    if: >
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - uses: actions/checkout@v7
 
@@ -32,6 +37,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Format
+        run: bun run format:check
+
       - name: Test
         run: bun run test
 
@@ -49,7 +57,8 @@ jobs:
   docker:
     needs: [checks, release-please]
     if: >
-      always() && needs.checks.result == 'success' &&
+      always() && github.event_name == 'push' &&
+      needs.checks.result == 'success' &&
       (github.ref_name != 'master' ||
         needs.release-please.outputs.release_created == 'true')
     uses: >-
