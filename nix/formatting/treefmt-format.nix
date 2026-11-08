@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+_: {
   projectRootFile = "flake.nix";
 
   programs = {
@@ -50,24 +46,6 @@
         "*.py"
       ];
       priority = 80;
-    };
-  };
-
-  settings.formatter = {
-    "uncomment" = {
-      command = let
-        uncomment = import ./uncomment.nix {
-          inherit lib pkgs;
-          inherit (pkgs.stdenv.hostPlatform) system;
-        };
-      in "${uncomment}/bin/uncomment";
-      includes = [
-        "src/**/*.ts"
-        "src/**/*.js"
-        "tests/**/*.ts"
-        "tests/**/*.js"
-      ];
-      priority = 40;
     };
   };
 }
