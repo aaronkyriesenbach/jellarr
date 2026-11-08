@@ -15,7 +15,7 @@ pkgs.testers.runNixOSTest {
       base_url = "http://localhost:8096";
       branding = {
         customCss = "@import url(\"https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/main.css\");";
-        loginDisclaimer = "Configured by <a href=\"https://github.com/venkyr77/jellarr\">Jellarr</a>";
+        loginDisclaimer = "Configured by <a href=\"https://github.com/aaronkyriesenbach/jellarr\">Jellarr</a>";
         splashscreenEnabled = false;
       };
       encoding = {

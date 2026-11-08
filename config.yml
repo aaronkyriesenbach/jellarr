@@ -1,20 +1,20 @@
 version: 1
-base_url: "http://10.0.0.76:8096"
+base_url: 'http://10.0.0.76:8096'
 system:
   enableMetrics: true
   pluginRepositories:
-    - name: "Jellyfin Official"
-      url: "https://repo.jellyfin.org/releases/plugin/manifest.json"
+    - name: 'Jellyfin Official'
+      url: 'https://repo.jellyfin.org/releases/plugin/manifest.json'
       enabled: true
   trickplayOptions:
     enableHwAcceleration: true
     enableHwEncoding: true
 encoding:
   enableHardwareEncoding: true
-  hardwareAccelerationType: "vaapi"
-  vaapiDevice: "/dev/dri/renderD128"
+  hardwareAccelerationType: 'vaapi'
+  vaapiDevice: '/dev/dri/renderD128'
   hardwareDecodingCodecs:
-    ["h264", "hevc", "mpeg2video", "vc1", "vp8", "vp9", "av1"]
+    ['h264', 'hevc', 'mpeg2video', 'vc1', 'vp8', 'vp9', 'av1']
   enableDecodingColorDepth10Hevc: true
   enableDecodingColorDepth10Vp9: true
   enableDecodingColorDepth10HevcRext: true
@@ -23,34 +23,35 @@ encoding:
   allowAv1Encoding: false
 library:
   virtualFolders:
-    - name: "test-jellarr"
-      collectionType: "movies"
+    - name: 'test-jellarr'
+      collectionType: 'movies'
       libraryOptions:
         pathInfos:
-          - path: "/mnt/movies/English"
+          - path: '/mnt/movies/English'
 branding:
   loginDisclaimer: |
-    Configured by <a href="https://github.com/venkyr77/jellarr">Jellarr</a>
+    Configured by
+    <a href="https://github.com/aaronkyriesenbach/jellarr">Jellarr</a>
   customCss: |
     @import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/main.css");
   splashscreenEnabled: false
 users:
-  - name: "test-jellarr-1"
-    password: "test"
+  - name: 'test-jellarr-1'
+    password: 'test'
     policy:
       isAdministrator: true
       loginAttemptsBeforeLockout: 5
-  - name: "test-jellarr-2"
-    passwordFile: "./test-pass-file"
+  - name: 'test-jellarr-2'
+    passwordFile: './test-pass-file'
     policy:
       isAdministrator: false
       loginAttemptsBeforeLockout: 3
-  - name: "test-jellarr-3"
-    password: "plainpass"
+  - name: 'test-jellarr-3'
+    password: 'plainpass'
 startup:
   completeStartupWizard: true
 plugins:
-  - name: "Trakt"
+  - name: 'Trakt'
     configuration:
       TraktUsers:
         - ExtraLogging: true

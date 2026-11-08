@@ -41,7 +41,8 @@ library:
           - path: /mnt/shows
 branding:
   loginDisclaimer: |
-    Configured by <a href="https://github.com/venkyr77/jellarr">Jellarr</a>
+    Configured by
+    <a href="https://github.com/aaronkyriesenbach/jellarr">Jellarr</a>
   customCss: |
     @import url("https://cdn.jsdelivr.net/npm/jellyskin@latest/dist/main.css");
   splashscreenEnabled: false
@@ -66,10 +67,12 @@ plugins:
       CastAndCrew: false
   - name: Studio Images
     configuration:
-      RepositoryUrl: https://raw.githubusercontent.com/jellyfin/emby-artwork/master/studios
+      RepositoryUrl:
+        "https://raw.githubusercontent.com/jellyfin/emby-artwork/master/\
+        studios"
   - name: TMDb
     configuration:
-      TmdbApiKey: ""
+      TmdbApiKey: ''
       IncludeAdult: false
       ExcludeTagsSeries: false
       ExcludeTagsMovies: false
