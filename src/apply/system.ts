@@ -1,10 +1,10 @@
-import { logger } from '@/lib/logger';
-import { ChangeSetBuilder, AtomicChangeSetBuilder } from '@/lib/changeset';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { AtomicChangeSetBuilder, ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
 import { mapSystemConfigurationConfigToSchema } from '@/mappers/system';
 import { type SystemConfig } from '@/types/config/system';
 import { type ServerConfigurationSchema } from '@/types/schema/system';
-import { diff, applyChangeset, type IChange } from 'json-diff-ts';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculateSystemDiff(
   current: ServerConfigurationSchema,

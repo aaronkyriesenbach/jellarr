@@ -1,13 +1,13 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import {
-  calculateNewUsersDiff,
-  createNewUsers,
-  calculateUserPoliciesDiff,
-  applyUserPolicies,
-} from '@/apply/users';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import {
+  applyUserPolicies,
+  calculateNewUsersDiff,
+  calculateUserPoliciesDiff,
+  createNewUsers,
+} from '@/apply/users';
 import type { UserConfig, UserConfigList } from '@/types/config/users';
 import type { UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 vi.mock('@/lib/logger', () => ({
   logger: {
     info: vi.fn(),

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { Command, Option } from 'commander';
-import { runPipeline } from '@/pipeline';
 import { runDump } from '@/dump';
+import { runPipeline } from '@/pipeline';
+import { Command, Option } from 'commander';
 
 interface ApplyOptions {
   configFile: string;

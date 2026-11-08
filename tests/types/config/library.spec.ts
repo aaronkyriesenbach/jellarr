@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import {
-  VirtualFolderConfigType,
-  type VirtualFolderConfig,
   LibraryConfigType,
+  VirtualFolderConfigType,
   type LibraryConfig,
+  type VirtualFolderConfig,
 } from '@/types/config/library';
+import { describe, expect, it } from 'vitest';
 import type { z } from 'zod';
 
 describe('types/config/library', () => {

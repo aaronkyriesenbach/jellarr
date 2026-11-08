@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, type Mock } from 'vitest';
-import { calculateBrandingOptionsDiff, applyBrandingOptions } from '@/apply/branding-options';
-import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import type { BrandingOptionsConfig } from '@/types/config/branding-options';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { applyBrandingOptions, calculateBrandingOptionsDiff } from '@/apply/branding-options';
+import type { BrandingOptionsConfig } from '@/types/config/branding-options';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import { describe, expect, it, vi, type Mock } from 'vitest';
 
 describe('calculateBrandingOptionsDiff', () => {
   it('should return undefined when no changes', () => {

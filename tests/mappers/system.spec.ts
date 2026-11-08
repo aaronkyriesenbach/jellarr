@@ -21,11 +21,10 @@
  * - ✅ Empty config handling
  * - ✅ Undefined field exclusion validation
  */
-import { describe, it, expect } from 'vitest';
-import { toPluginRepositorySchemas, mapSystemConfigurationConfigToSchema } from '@/mappers/system';
-import type { SystemConfig } from '@/types/config/system';
-import type { PluginRepositoryConfig } from '@/types/config/system';
+import { mapSystemConfigurationConfigToSchema, toPluginRepositorySchemas } from '@/mappers/system';
+import type { PluginRepositoryConfig, SystemConfig } from '@/types/config/system';
 import type { PluginRepositorySchema, ServerConfigurationSchema } from '@/types/schema/system';
+import { describe, expect, it } from 'vitest';
 
 describe('mappers/system', () => {
   describe('toPluginRepositorySchemas', () => {

@@ -1,6 +1,6 @@
-import createClient, { type Client } from 'openapi-fetch';
 import type { paths } from '@generated/schema';
 import { version } from '@root/package.json';
+import createClient, { type Client } from 'openapi-fetch';
 
 export function makeClient(baseUrl: string, apiKey: string): Client<paths> {
   const client: Client<paths> = createClient<paths>({

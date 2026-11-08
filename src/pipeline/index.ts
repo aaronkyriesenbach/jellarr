@@ -1,34 +1,34 @@
-import { promises as fs } from 'fs';
-import YAML from 'yaml';
-import { calculateSystemDiff, applySystem } from '@/apply/system';
-import { calculateEncodingDiff, applyEncoding } from '@/apply/encoding-options';
-import { calculateLibraryDiff, applyLibrary } from '@/apply/library';
-import { calculateBrandingOptionsDiff, applyBrandingOptions } from '@/apply/branding-options';
+import { type JellyfinClient } from '@/api/jellyfin.types';
+import { createJellyfinClient } from '@/api/jellyfin_client';
+import { applyBrandingOptions, calculateBrandingOptionsDiff } from '@/apply/branding-options';
+import { applyEncoding, calculateEncodingDiff } from '@/apply/encoding-options';
+import { applyLibrary, calculateLibraryDiff } from '@/apply/library';
 import {
+  applyPluginConfigurations,
+  calculatePluginConfigurationsDiff,
+  calculatePluginsToInstall,
+  getPluginConfigurationSchemaByName,
+  installPlugins,
+} from '@/apply/plugins';
+import { applySystem, calculateSystemDiff } from '@/apply/system';
+import {
+  applyUserPolicies,
   calculateNewUsersDiff,
   calculateUserPoliciesDiff,
-  applyUserPolicies,
   createNewUsers,
 } from '@/apply/users';
-import type { VirtualFolderInfoSchema } from '@/types/schema/library';
-import { type ServerConfigurationSchema } from '@/types/schema/system';
-import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
-import { type BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import type { UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
-import type { UserConfig } from '@/types/config/users';
-import { createJellyfinClient } from '@/api/jellyfin_client';
-import { type JellyfinClient } from '@/api/jellyfin.types';
-import { RootConfigType, type RootConfig } from '@/types/config/root';
-import { type ZodSafeParseResult, type z } from 'zod';
-import { type PluginInfoSchema, type BasePluginConfigurationSchema } from '@/types/schema/plugins';
-import {
-  calculatePluginsToInstall,
-  installPlugins,
-  calculatePluginConfigurationsDiff,
-  applyPluginConfigurations,
-  getPluginConfigurationSchemaByName,
-} from '@/apply/plugins';
 import type { PluginConfig } from '@/types/config/plugins';
+import { RootConfigType, type RootConfig } from '@/types/config/root';
+import type { UserConfig } from '@/types/config/users';
+import { type BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import type { VirtualFolderInfoSchema } from '@/types/schema/library';
+import { type BasePluginConfigurationSchema, type PluginInfoSchema } from '@/types/schema/plugins';
+import { type ServerConfigurationSchema } from '@/types/schema/system';
+import type { UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
+import { promises as fs } from 'fs';
+import YAML from 'yaml';
+import { type ZodSafeParseResult, type z } from 'zod';
 
 export async function runPipeline(path: string): Promise<void> {
   const raw: string = await fs.readFile(path, 'utf8');

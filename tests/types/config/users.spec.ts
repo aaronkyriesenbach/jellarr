@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import type { ZodSafeParseResult } from 'zod';
-import { type z } from 'zod';
 import {
-  UserConfigType,
-  type UserConfig,
   UserConfigListType,
-  type UserConfigList,
+  UserConfigType,
   UserPolicyConfigType,
+  type UserConfig,
+  type UserConfigList,
   type UserPolicyConfig,
 } from '@/types/config/users';
+import { describe, expect, it } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 
 describe('UserConfig', () => {
   it('should reject user with name only (no password source)', () => {

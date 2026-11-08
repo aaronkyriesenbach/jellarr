@@ -51,11 +51,11 @@
  * - ✅ Mixed updates (one field same, one different)
  * - ✅ All 11 fields complete scenario
  */
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { calculateEncodingDiff, applyEncoding } from '@/apply/encoding-options';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { applyEncoding, calculateEncodingDiff } from '@/apply/encoding-options';
 import { type EncodingOptionsConfig } from '@/types/config/encoding-options';
 import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 vi.mock('@/lib/logger', () => ({
   logger: {

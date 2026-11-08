@@ -1,10 +1,10 @@
-import { logger } from '@/lib/logger';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
 import { mapEncodingOptionsConfigToSchema } from '@/mappers/encoding-options';
 import { type EncodingOptionsConfig } from '@/types/config/encoding-options';
 import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
 import { applyChangeset, diff, type IChange } from 'json-diff-ts';
-import { ChangeSetBuilder } from '@/lib/changeset';
 
 export function calculateEncodingDiff(
   current: EncodingOptionsSchema,

@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { StartupConfigType, type StartupConfig } from '@/types/config/startup';
+import { describe, expect, it } from 'vitest';
 import type { ZodSafeParseResult } from 'zod';
 import { type z } from 'zod';
-import { StartupConfigType, type StartupConfig } from '@/types/config/startup';
 
 describe('StartupConfig', () => {
   it('should validate startup config with completeStartupWizard true', () => {

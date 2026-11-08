@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { writeFileSync, unlinkSync, existsSync } from 'fs';
 import {
-  getPlaintextPassword,
-  getPasswordFromFile,
   getPassword,
+  getPasswordFromFile,
+  getPlaintextPassword,
   mapUserConfigToCreateSchema,
   mapUserPolicyConfigToSchema,
 } from '@/mappers/users';
 import { type UserConfig, type UserPolicyConfig } from '@/types/config/users';
 import { type CreateUserByNameSchema, type UserPolicySchema } from '@/types/schema/users';
+import { existsSync, unlinkSync, writeFileSync } from 'fs';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('mappers/users', () => {
   const testPasswordFile: string = '/tmp/test-user-password';

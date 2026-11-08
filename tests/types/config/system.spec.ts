@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import type { ZodSafeParseResult } from 'zod';
-import { type z } from 'zod';
 import {
-  SystemConfigType,
-  type SystemConfig,
   PluginRepositoryConfigType,
-  type PluginRepositoryConfig,
+  SystemConfigType,
   TrickplayOptionsConfigType,
+  type PluginRepositoryConfig,
+  type SystemConfig,
   type TrickplayOptionsConfig,
 } from '@/types/config/system';
+import { describe, expect, it } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 
 describe('SystemConfig', () => {
   it('should validate empty system config', () => {

@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, type Mock } from 'vitest';
 import { logger } from '@/lib/logger';
+import { describe, expect, it, vi, type Mock } from 'vitest';
 
 describe('lib/logger', () => {
   it('whenInfoCalled_thenWritesToConsoleLog()', () => {

@@ -1,10 +1,10 @@
+import type { JellyfinClient } from '@/api/jellyfin.types';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
+import { mapBrandingOptionsConfigToSchema } from '@/mappers/branding-options';
 import type { BrandingOptionsConfig } from '@/types/config/branding-options';
 import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import { mapBrandingOptionsConfigToSchema } from '@/mappers/branding-options';
-import type { JellyfinClient } from '@/api/jellyfin.types';
-import { logger } from '@/lib/logger';
-import { diff, applyChangeset, type IChange } from 'json-diff-ts';
-import { ChangeSetBuilder } from '@/lib/changeset';
+import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculateBrandingOptionsDiff(
   current: BrandingOptionsDtoSchema,

@@ -1,16 +1,16 @@
-import { logger } from '@/lib/logger';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
 import type {
   PluginConfig,
   PluginConfigList,
   PluginConfigurationConfig,
 } from '@/types/config/plugins';
 import type {
-  PluginInfoSchema,
   BasePluginConfigurationSchema,
   PluginConfigurationSchema,
+  PluginInfoSchema,
 } from '@/types/schema/plugins';
-import { ChangeSetBuilder } from '@/lib/changeset';
 import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculatePluginsToInstall(

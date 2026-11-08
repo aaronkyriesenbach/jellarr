@@ -1,11 +1,11 @@
-import { createJellyfinClient } from '@/api/jellyfin_client';
 import type { JellyfinClient } from '@/api/jellyfin.types';
-import type { ServerConfigurationSchema, PluginRepositorySchema } from '@/types/schema/system';
-import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
-import type { VirtualFolderInfoSchema, MediaPathInfoSchema } from '@/types/schema/library';
+import { createJellyfinClient } from '@/api/jellyfin_client';
 import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import type { MediaPathInfoSchema, VirtualFolderInfoSchema } from '@/types/schema/library';
+import type { BasePluginConfigurationSchema, PluginInfoSchema } from '@/types/schema/plugins';
+import type { PluginRepositorySchema, ServerConfigurationSchema } from '@/types/schema/system';
 import type { UserDtoSchema } from '@/types/schema/users';
-import type { PluginInfoSchema, BasePluginConfigurationSchema } from '@/types/schema/plugins';
 import * as yaml from 'yaml';
 
 interface PluginWithConfig {

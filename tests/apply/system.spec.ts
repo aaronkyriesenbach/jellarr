@@ -31,11 +31,11 @@
  * - ✅ Malformed state handling (null values)
  * - ✅ Robust error recovery
  */
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { calculateSystemDiff, applySystem } from '@/apply/system';
 import type { JellyfinClient } from '@/api/jellyfin.types';
-import type { ServerConfigurationSchema } from '@/types/schema/system';
+import { applySystem, calculateSystemDiff } from '@/apply/system';
 import type { SystemConfig } from '@/types/config/system';
+import type { ServerConfigurationSchema } from '@/types/schema/system';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 vi.mock('@/lib/logger', () => ({
   logger: {

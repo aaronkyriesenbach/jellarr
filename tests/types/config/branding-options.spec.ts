@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
 import {
   BrandingOptionsConfigType,
   type BrandingOptionsConfig,
 } from '@/types/config/branding-options';
+import { describe, expect, it } from 'vitest';
 import type { ZodSafeParseResult } from 'zod';
 
 describe('BrandingOptionsConfigType', () => {

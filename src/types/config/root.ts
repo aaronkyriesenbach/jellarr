@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import { SystemConfigType } from '@/types/config/system';
+import { BrandingOptionsConfigType } from '@/types/config/branding-options';
 import { EncodingOptionsConfigType } from '@/types/config/encoding-options';
 import { LibraryConfigType } from '@/types/config/library';
-import { BrandingOptionsConfigType } from '@/types/config/branding-options';
-import { UserConfigListType } from '@/types/config/users';
-import { StartupConfigType } from '@/types/config/startup';
 import { PluginConfigListType } from '@/types/config/plugins';
+import { StartupConfigType } from '@/types/config/startup';
+import { SystemConfigType } from '@/types/config/system';
+import { UserConfigListType } from '@/types/config/users';
+import { z } from 'zod';
 
 export const RootConfigType: z.ZodObject<{
   version: z.ZodNumber;

@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
 import { mapBrandingOptionsConfigToSchema } from '@/mappers/branding-options';
 import type { BrandingOptionsConfig } from '@/types/config/branding-options';
 import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import { describe, expect, it } from 'vitest';
 
 describe('mapBrandingOptionsConfigToSchema', () => {
   it('should map all fields when all are specified', () => {

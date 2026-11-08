@@ -1,13 +1,13 @@
-import type { ServerConfigurationSchema } from '@/types/schema/system';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
 import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
 import type {
-  VirtualFolderInfoSchema,
   AddVirtualFolderDtoSchema,
   CollectionTypeSchema,
+  VirtualFolderInfoSchema,
 } from '@/types/schema/library';
-import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import type { UserDtoSchema, CreateUserByNameSchema, UserPolicySchema } from '@/types/schema/users';
-import { type PluginInfoSchema, type BasePluginConfigurationSchema } from '@/types/schema/plugins';
+import { type BasePluginConfigurationSchema, type PluginInfoSchema } from '@/types/schema/plugins';
+import type { ServerConfigurationSchema } from '@/types/schema/system';
+import type { CreateUserByNameSchema, UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
 
 export interface ApiResponse<T = unknown> {
   data?: T;

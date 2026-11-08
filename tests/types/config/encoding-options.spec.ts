@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import type { ZodSafeParseResult } from 'zod';
-import { type z } from 'zod';
 import {
   EncodingOptionsConfigType,
   type EncodingOptionsConfig,
 } from '@/types/config/encoding-options';
+import { describe, expect, it } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 
 describe('EncodingOptionsConfig', () => {
   it('should validate empty encoding config', () => {

@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs';
 import { type UserConfig, type UserPolicyConfig } from '@/types/config/users';
 import { type CreateUserByNameSchema, type UserPolicySchema } from '@/types/schema/users';
+import { readFileSync } from 'fs';
 
 export function getPlaintextPassword(config: UserConfig): string | undefined {
   return config.password;

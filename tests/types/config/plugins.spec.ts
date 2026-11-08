@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest';
-import type { ZodSafeParseResult } from 'zod';
-import { type z } from 'zod';
 import {
-  PluginConfigType,
   PluginConfigListType,
+  PluginConfigType,
   type PluginConfig,
   type PluginConfigList,
 } from '@/types/config/plugins';
+import { describe, expect, it } from 'vitest';
+import type { ZodSafeParseResult } from 'zod';
+import { type z } from 'zod';
 
 describe('PluginConfig', () => {
   it('should validate plugin config with valid name', () => {

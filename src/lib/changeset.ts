@@ -2,8 +2,8 @@ import {
   Operation,
   atomizeChangeset,
   unatomizeChangeset,
-  type IChange,
   type IAtomicChange,
+  type IChange,
 } from 'json-diff-ts';
 
 interface IChangeBase {

@@ -1,16 +1,16 @@
-import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
-import { createJellyfinClient } from '@/api/jellyfin_client';
 import type { JellyfinClient } from '@/api/jellyfin.types';
-import type { ServerConfigurationSchema } from '@/types/schema/system';
+import { createJellyfinClient } from '@/api/jellyfin_client';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
+import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
 import type {
-  VirtualFolderInfoSchema,
   AddVirtualFolderDtoSchema,
   LibraryOptionsSchema,
+  VirtualFolderInfoSchema,
 } from '@/types/schema/library';
-import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
-import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import type { UserDtoSchema, CreateUserByNameSchema, UserPolicySchema } from '@/types/schema/users';
-import type { PluginInfoSchema, BasePluginConfigurationSchema } from '@/types/schema/plugins';
+import type { BasePluginConfigurationSchema, PluginInfoSchema } from '@/types/schema/plugins';
+import type { ServerConfigurationSchema } from '@/types/schema/system';
+import type { CreateUserByNameSchema, UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 const baseUrl: string = 'http://localhost:8096/';
 const apiKey: string = 'test-key';

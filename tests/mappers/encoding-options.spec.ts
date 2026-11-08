@@ -41,10 +41,10 @@
  *
  * Total coverage: 18 comprehensive tests across all 11 encoding options fields.
  */
-import { describe, it, expect } from 'vitest';
 import { mapEncodingOptionsConfigToSchema } from '@/mappers/encoding-options';
 import { type EncodingOptionsConfig } from '@/types/config/encoding-options';
 import { type EncodingOptionsSchema } from '@/types/schema/encoding-options';
+import { describe, expect, it } from 'vitest';
 
 describe('mappers/encoding', () => {
   describe('mapEncodingOptionsConfigToSchema', () => {

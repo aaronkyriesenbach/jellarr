@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { deepEqual } from 'fast-equals';
+import { describe, expect, it } from 'vitest';
 
 describe('lib/deep-equality', () => {
   describe('deepEqual vs JSON.stringify', () => {

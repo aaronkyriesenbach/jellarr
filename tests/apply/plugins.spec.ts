@@ -1,23 +1,23 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
+import type { JellyfinClient } from '@/api/jellyfin.types';
 import {
-  calculatePluginsToInstall,
-  installPlugins,
-  getPluginConfigurationSchemaByName,
+  applyPluginConfigurations,
   calculatePluginConfigurationDiff,
   calculatePluginConfigurationsDiff,
-  applyPluginConfigurations,
+  calculatePluginsToInstall,
+  getPluginConfigurationSchemaByName,
+  installPlugins,
 } from '@/apply/plugins';
-import type { JellyfinClient } from '@/api/jellyfin.types';
 import type {
   PluginConfig,
   PluginConfigList,
   PluginConfigurationConfig,
 } from '@/types/config/plugins';
 import type {
-  PluginInfoSchema,
   BasePluginConfigurationSchema,
   PluginConfigurationSchema,
+  PluginInfoSchema,
 } from '@/types/schema/plugins';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 vi.mock('@/lib/logger', () => ({
   logger: {

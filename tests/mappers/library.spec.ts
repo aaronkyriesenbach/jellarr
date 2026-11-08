@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
 import { mapVirtualFolderConfigToSchema } from '@/mappers/library';
 import type { VirtualFolderConfig } from '@/types/config/library';
 import type { VirtualFolderInfoSchema } from '@/types/schema/library';
+import { describe, expect, it } from 'vitest';
 
 describe('mappers/library', () => {
   describe('mapVirtualFolderConfigToSchema', () => {

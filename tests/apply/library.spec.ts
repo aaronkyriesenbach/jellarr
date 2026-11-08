@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { calculateLibraryDiff, applyLibrary } from '@/apply/library';
 import type { JellyfinClient } from '@/api/jellyfin.types';
+import { applyLibrary, calculateLibraryDiff } from '@/apply/library';
+import { logger } from '@/lib/logger';
 import type { LibraryConfig, VirtualFolderConfig } from '@/types/config/library';
 import type { LibraryOptionsSchema, VirtualFolderInfoSchema } from '@/types/schema/library';
-import { logger } from '@/lib/logger';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
 describe('apply/library', () => {
   let mockClient: JellyfinClient;

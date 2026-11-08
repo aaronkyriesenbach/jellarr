@@ -1,24 +1,20 @@
 import {
+  type PluginRepositoryConfig,
   type SystemConfig,
   type TrickplayOptionsConfig,
-  type PluginRepositoryConfig,
 } from '@/types/config/system';
 import {
+  type PluginRepositorySchema,
   type ServerConfigurationSchema,
   type TrickplayOptionsSchema,
-  type PluginRepositorySchema,
 } from '@/types/schema/system';
 
 export function toPluginRepositorySchemas(
   inRepos: PluginRepositoryConfig[],
 ): PluginRepositorySchema[] {
-  return inRepos.map(
-    (r: PluginRepositoryConfig): PluginRepositorySchema => ({
-      Name: r.name,
-      Url: r.url,
-      Enabled: r.enabled,
-    }),
-  );
+  return inRepos.map((r: PluginRepositoryConfig): PluginRepositorySchema => {
+    return { Name: r.name, Url: r.url, Enabled: r.enabled };
+  });
 }
 
 export function toTrickplayOptionsSchema(cfg: TrickplayOptionsConfig): TrickplayOptionsSchema {

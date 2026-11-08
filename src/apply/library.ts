@@ -1,16 +1,16 @@
-import { logger } from '@/lib/logger';
-import { ChangeSetBuilder } from '@/lib/changeset';
 import type { JellyfinClient } from '@/api/jellyfin.types';
-import type { VirtualFolderConfig } from '@/types/config/library';
-import type {
-  VirtualFolderInfoSchema,
-  CollectionTypeSchema,
-  AddVirtualFolderDtoSchema,
-} from '@/types/schema/library';
+import { ChangeSetBuilder } from '@/lib/changeset';
+import { logger } from '@/lib/logger';
 import {
   mapVirtualFolderConfigToSchema,
   mapVirtualFolderInfoSchemaToAddVirtualFolderDtoSchema,
 } from '@/mappers/library';
+import type { VirtualFolderConfig } from '@/types/config/library';
+import type {
+  AddVirtualFolderDtoSchema,
+  CollectionTypeSchema,
+  VirtualFolderInfoSchema,
+} from '@/types/schema/library';
 import { applyChangeset, diff, type IChange } from 'json-diff-ts';
 
 export function calculateLibraryDiff(

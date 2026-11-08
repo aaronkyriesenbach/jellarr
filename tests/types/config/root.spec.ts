@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { RootConfigType, type RootConfig } from '@/types/config/root';
+import { describe, expect, it } from 'vitest';
 import type { ZodSafeParseResult } from 'zod';
 import { type z } from 'zod';
-import { RootConfigType, type RootConfig } from '@/types/config/root';
 
 describe('RootConfig', () => {
   it('should validate complete root config', () => {

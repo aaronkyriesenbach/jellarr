@@ -1,35 +1,35 @@
-import type { ServerConfigurationSchema } from '@/types/schema/system';
+import { makeClient } from '@/api/client';
+import type {
+  GetBrandingConfigurationResponse,
+  GetEncodingConfigurationResponse,
+  GetPluginConfigurationResponse,
+  GetPluginsResponse,
+  GetSystemConfigurationResponse,
+  GetUsersResponse,
+  GetVirtualFoldersResponse,
+  JellyfinClient,
+  PostBrandingConfigurationResponse,
+  PostEncodingConfigurationResponse,
+  PostInstallPackageResponse,
+  PostNewUserResponse,
+  PostPluginConfigurationResponse,
+  PostStartupCompleteResponse,
+  PostSystemConfigurationResponse,
+  PostUserPolicyResponse,
+  PostVirtualFolderResponse,
+} from '@/api/jellyfin.types';
+import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
 import type { EncodingOptionsSchema } from '@/types/schema/encoding-options';
 import type {
-  VirtualFolderInfoSchema,
   AddVirtualFolderDtoSchema,
   CollectionTypeSchema,
+  VirtualFolderInfoSchema,
 } from '@/types/schema/library';
-import type { BrandingOptionsDtoSchema } from '@/types/schema/branding-options';
-import type { UserDtoSchema, CreateUserByNameSchema, UserPolicySchema } from '@/types/schema/users';
-import type {
-  JellyfinClient,
-  GetSystemConfigurationResponse,
-  PostSystemConfigurationResponse,
-  GetEncodingConfigurationResponse,
-  PostEncodingConfigurationResponse,
-  GetVirtualFoldersResponse,
-  PostVirtualFolderResponse,
-  GetBrandingConfigurationResponse,
-  PostBrandingConfigurationResponse,
-  GetUsersResponse,
-  PostNewUserResponse,
-  PostUserPolicyResponse,
-  PostStartupCompleteResponse,
-  GetPluginsResponse,
-  PostInstallPackageResponse,
-  GetPluginConfigurationResponse,
-  PostPluginConfigurationResponse,
-} from '@/api/jellyfin.types';
-import { makeClient } from '@/api/client';
+import { type BasePluginConfigurationSchema, type PluginInfoSchema } from '@/types/schema/plugins';
+import type { ServerConfigurationSchema } from '@/types/schema/system';
+import type { CreateUserByNameSchema, UserDtoSchema, UserPolicySchema } from '@/types/schema/users';
 import type { paths } from '@generated/schema';
 import type { Client } from 'openapi-fetch';
-import { type PluginInfoSchema, type BasePluginConfigurationSchema } from '@/types/schema/plugins';
 
 export function createJellyfinClient(baseUrl: string, apiKey: string): JellyfinClient {
   const client: Client<paths> = makeClient(baseUrl, apiKey);
